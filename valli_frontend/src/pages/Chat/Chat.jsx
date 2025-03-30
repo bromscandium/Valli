@@ -1,7 +1,9 @@
 import React, {useState, useRef, useEffect} from "react"
+import {Helmet} from "react-helmet-async"
 import Header from "../../components/Header/Header"
 import Footer from "../../components/Footer/Footer"
 import "./Chat.sass"
+
 
 function Chat() {
     const [input, setInput] = useState("")
@@ -77,6 +79,9 @@ function Chat() {
 
     return (
         <div className="chat-page">
+            <Helmet>
+                <title>Valli | Chat</title>
+            </Helmet>
             <Header/>
             <div className="chat-body">
                 <div className="chat-messages">

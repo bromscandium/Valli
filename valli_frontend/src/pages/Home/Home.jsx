@@ -1,4 +1,5 @@
 import React from "react"
+import {Helmet} from "react-helmet-async"
 import Header from "../../components/Header/Header.jsx"
 import Footer from "../../components/Footer/Footer.jsx"
 import ProjectCard from "../../components/ProjectCard/ProjectCard.jsx"
@@ -8,9 +9,13 @@ import CommunityUpdates from "../../components/CommunityUpdates/CommunityUpdates
 import "./Home.sass"
 import {projectsData} from "../../mock/ProjectsData.js"
 
+
 function Home() {
     return (
         <div className="home">
+            <Helmet>
+                <title>Valli</title>
+            </Helmet>
             <Header/>
             <div className="scroll-content">
                 <UserCard/>

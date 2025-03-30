@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { Helmet } from "react-helmet-async"
 import Header from "../../components/Header/Header.jsx"
 import Footer from "../../components/Footer/Footer.jsx"
 import "./Project.sass"
@@ -36,6 +37,9 @@ function Project() {
 
     return (
         <div className="project-page">
+            <Helmet>
+                <title>Valli | Projects</title>
+            </Helmet>
             <Header />
             <div className="scroll-container">
                 <Panel
