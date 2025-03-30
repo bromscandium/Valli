@@ -1,8 +1,23 @@
-const ProjectOverview = () => {
+import React from "react"
+import "./ProjectOverview.sass"
+
+const ProjectOverview = ({data}) => {
+    const {name, location, type, objective} = data
+
     return (
-        <section>
-            <h2>Project Overview</h2>
-            <p>This section gives a quick summary of the project.</p>
+        <section className="project-overview">
+            <div className="overview-header">
+                <h2 className="project-name">{name}</h2>
+                <span className="location-badge">📍 {location}</span>
+            </div>
+
+            <div className="type">
+                <span className="label">Type: {type}</span>
+            </div>
+
+            <div className="objective">
+                <span className="label">Objective: {objective}</span>
+            </div>
         </section>
     )
 }

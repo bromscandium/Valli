@@ -5,11 +5,11 @@ import {projectsData} from "../../mock/ProjectsData"
 
 import Panel from "../../components/Project/Panel/Panel.jsx"
 import ProjectOverview from "../../components/Project/ProjectOverview/ProjectOverview.jsx"
-import ProjectDetails from "../../components/Project/ProjectDetails/ProjectDetails.jsx"
+import FieldAndCropDetails from "../../components/Project/FieldAndCropDetails/FieldAndCropDetails.jsx"
 import HealthMetrics from "../../components/Project/HealthMetrics/HealthMetrics.jsx"
 import Insights from "../../components/Project/Insights/Insights.jsx"
 import WaterUsage from "../../components/Project/WaterUsage/WaterUsage.jsx"
-import ProductRecommendation from "../../components/Project/ProductRecommendation/ProductRecommendation.jsx"
+import BiologicalAndRecommendations from "../../components/Project/BiologicalAndRecommendations/BiologicalAndRecommendations.jsx"
 
 import "./Project.sass"
 
@@ -46,11 +46,11 @@ function Project() {
                 />
 
                 <ProjectOverview data={project.overviewData}/>
-                <ProjectDetails data={project.projectDetailsData}/>
+                <FieldAndCropDetails data={project.fieldAndCropDetails}/>
                 <HealthMetrics data={project.healthMetricsData}/>
                 <Insights data={project.insightsData}/>
                 <WaterUsage data={project.waterData}/>
-                <ProductRecommendation data={project.recommendationData}/>
+                <BiologicalAndRecommendations data={project.bioAndRecommendationsData}/>
             </div>
         </div>
     )

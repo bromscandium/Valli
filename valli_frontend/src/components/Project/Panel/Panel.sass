@@ -4,8 +4,9 @@
     justify-content: space-between
     padding: 20px 16px
     background-color: #fff
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1)
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
     border-radius: 6px
+    margin-bottom: 16px
 
 .back-btn, .share-btn
     background-color: transparent
@@ -18,12 +19,15 @@
 .back-btn
     color: #fff
     background: #fa7202
-    border: none
+    border: 1px #bebebe solid
     padding: 6px 24px
     border-radius: 8px
     font-weight: 600
     cursor: pointer
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15)
+    transition: background 0.3s ease
+
+.back-btn:hover
+    background: #da0967
 
 .actions
     display: flex
@@ -40,32 +44,39 @@
     align-items: center
     background: #eee
     border-radius: 20px
-    padding: 6px 12px
-    border: none
+    padding: 9px 14px
+    border: 1px #bebebe solid
     cursor: pointer
     position: relative
-    gap: 8px
+    width: 130px
+    height: 50px
 
 .privacy-text
     font-size: 20px
     transition: transform 0.3s ease
+    position: absolute
+    left: 40%
+    transform: translateX(-50%)
 
 .toggle-circle
     width: 28px
     height: 28px
     background: #fff
     border-radius: 50%
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2)
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2)
     transition: transform 0.3s ease
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
 
 .privacy-toggle.public .toggle-circle
-    transform: translateX(70px)
+    transform: translateX(77px) translateY(-50%)
 
 .privacy-toggle.private .toggle-circle
-    transform: translateX(0)
+    transform: translateX(-3px) translateY(-50%)
 
 .privacy-toggle.public .privacy-text
-    transform: translateX(-35px)
+    transform: translateX(-40px)
 
 .privacy-toggle.private .privacy-text
     transform: translateX(0)
@@ -76,4 +87,4 @@
 
 .privacy-toggle.private
     background-color: #ccc
-    color: #555
+    color: #000

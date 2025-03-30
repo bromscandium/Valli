@@ -1,4 +1,4 @@
-const ProductRecommendation = () => {
+const BiologicalAndRecommendations = () => {
     return (
         <section>
             <h2>Product Recommendation</h2>
@@ -7,4 +7,4 @@ const ProductRecommendation = () => {
     )
 }
 
-export default ProductRecommendation
+export default BiologicalAndRecommendations

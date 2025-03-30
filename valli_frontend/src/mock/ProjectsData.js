@@ -14,8 +14,8 @@ export const projectsData = [
             lastUpdated: new Date(),
         },
 
-        /*Project Details*/
-        projectDetailsData: {
+        /*Field And Crop Details*/
+        fieldAndCropDetails: {
             size: "5",
             stage: "Planning",
             irrigationMethod: "Canal",
@@ -48,8 +48,8 @@ export const projectsData = [
             },
         },
 
-        /*Product Recommendation*/
-        recommendationData: {
+        /*Biological And Recommendations*/
+        bioAndRecommendationsData: {
             listProductsData: [
                 {
                     header: {
@@ -167,8 +167,8 @@ export const projectsData = [
             lastUpdated: new Date(),
         },
 
-        /*Project Details*/
-        projectDetailsData: {
+        /*Field And Crop Details*/
+        fieldAndCropDetails: {
             size: "12",
             stage: "Active Growth",
             irrigationMethod: "Sprinkler",
@@ -201,8 +201,8 @@ export const projectsData = [
             },
         },
 
-        /*Product Recommendation*/
-        recommendationData: {
+        /*Biological And Recommendations*/
+        bioAndRecommendationsData: {
             listProductsData: [
                 {
                     header: {
@@ -313,8 +313,8 @@ export const projectsData = [
             lastUpdated: new Date(),
         },
 
-        /*Project Details*/
-        projectDetailsData: {
+        /*Field And Crop Details*/
+        fieldAndCropDetails: {
             size: "18",
             stage: "Harvesting",
             irrigationMethod: "Tube wells",
@@ -347,8 +347,8 @@ export const projectsData = [
             },
         },
 
-        /*Product Recommendation*/
-        recommendationData: {
+        /*Biological And Recommendations*/
+        bioAndRecommendationsData: {
             listProductsData: [
                 {
                     header: {
@@ -457,8 +457,8 @@ export const projectsData = [
             lastUpdated: new Date(),
         },
 
-        /*Project Details*/
-        projectDetailsData: {
+        /*Field And Crop Details*/
+        fieldAndCropDetails: {
             size: "7.5",
             stage: "Soil Prep",
             irrigationMethod: "Drip",
@@ -491,8 +491,8 @@ export const projectsData = [
             },
         },
 
-        /*Product Recommendation*/
-        recommendationData: {
+        /*Biological And Recommendations*/
+        bioAndRecommendationsData: {
             listProductsData: [
                 {
                     header: {
