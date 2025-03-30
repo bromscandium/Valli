@@ -1,7 +1,9 @@
 import React from "react"
 import "./ProjectCard.sass"
+import { useNavigate } from "react-router-dom"
 
 function ProjectCard({
+                         id,
                          name,
                          status,
                          location,
@@ -23,6 +25,8 @@ function ProjectCard({
                 return "status-unknown"
         }
     }
+
+    const navigate = useNavigate()
 
     return (
         <div className="project-card">

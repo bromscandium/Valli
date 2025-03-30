@@ -11,9 +11,38 @@ function AllProjects() {
             <Header/>
             <div className="scroll-content">
                 <h4 className="section-title">Your Projects</h4>
-                {projectsData.map((project) => (
-                    <ProjectCard key={project.id} {...project} />
-                ))}
+                {projectsData.map((project) => {
+                    const {
+                        id,
+                        overviewData: {
+                            name,
+                            status,
+                            location,
+                            newInsights,
+                            lastUpdated,
+                        },
+                        healthMetricsData: {
+                            waterNeeds,
+                            frostRisk,
+                            soilHealth,
+                        },
+                    } = project
+
+                    return (
+                        <ProjectCard
+                            key={id}
+                            id={id}
+                            name={name}
+                            status={status}
+                            location={location}
+                            newInsights={newInsights}
+                            lastUpdated={lastUpdated}
+                            waterNeeds={waterNeeds}
+                            frostRisk={frostRisk}
+                            soilHealth={soilHealth}
+                        />
+                    )
+                })}
             </div>
             <Footer/>
         </div>
