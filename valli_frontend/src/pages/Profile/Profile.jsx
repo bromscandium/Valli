@@ -4,7 +4,6 @@ import Header from "../../components/Header/Header.jsx"
 import Footer from "../../components/Footer/Footer.jsx"
 import "./Profile.sass"
 
-
 function Profile() {
     return (
         <div className="page-wrapper">
