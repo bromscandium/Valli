@@ -16,6 +16,7 @@
 ```
 /src
  ┣ /components
+ ┣ /mock
  ┣ /pages
  ┣ /styles
  ┣ App.jsx
