@@ -97,25 +97,7 @@ function Chat() {
                 </div>
 
                 <div className="chat-input">
-                    <textarea
-                        className="text-input"
-                        placeholder="Type your message..."
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        rows={1}
-                        onFocus={() => {
-                            setTimeout(() => {
-                                window.scrollTo(0, document.body.scrollHeight)
-                            }, 300)
-                        }}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                e.preventDefault()
-                                handleSend()
-                            }
-                        }}
-                    />
-                    <div className="controls">
+                    <div className="session-control">
                         {isSessionActive ? (
                             <button onClick={stopSession}>
                                 <img src="/pause-session.png" alt="Stop Session"/>
@@ -125,23 +107,43 @@ function Chat() {
                                 <img src="/start-session.png" alt="Start Session"/>
                             </button>
                         )}
-
-                        {isRecording ? (
-                            <button onClick={stopRecording}>
-                                <img src="/block-microphone.png" alt="Stop Recording"/>
-                            </button>
-                        ) : (
-                            <button onClick={startRecording}>
-                                <img src="/begin-microphone.png" alt="Start Recording"/>
-                            </button>
-                        )}
-
-                        <button onClick={handleSend}>
-                            <img src="/send.png" alt="Send Message"/>
-                        </button>
                     </div>
-
+                    <div className="input-row">
+                        <textarea
+                            className="text-input"
+                            placeholder="Type your message..."
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            rows={1}
+                            onFocus={() => {
+                                setTimeout(() => {
+                                    window.scrollTo(0, document.body.scrollHeight)
+                                }, 300)
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault()
+                                    handleSend()
+                                }
+                            }}
+                        />
+                        <div className="input-actions">
+                            {isRecording ? (
+                                <button onClick={stopRecording}>
+                                    <img src="/block-microphone.png" alt="Stop Recording"/>
+                                </button>
+                            ) : (
+                                <button onClick={startRecording}>
+                                    <img src="/begin-microphone.png" alt="Start Recording"/>
+                                </button>
+                            )}
+                            <button onClick={handleSend}>
+                                <img src="/send.png" alt="Send Message"/>
+                            </button>
+                        </div>
+                    </div>
                 </div>
+
             </div>
             <Footer/>
         </div>

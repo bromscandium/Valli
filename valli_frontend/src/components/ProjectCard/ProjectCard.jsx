@@ -27,9 +27,17 @@ function ProjectCard({
     return (
         <div className="project-card">
             <div className="badges-row">
-                <span className={`status-badge ${getStatusClass(status)}`}>{status}</span>
-                <span className="location-badge">📍{location}</span>
-                <span className="insights-badge">{newInsights} new insights</span>
+                <div className="left">
+                    <span className={`status-badge ${getStatusClass(status)}`}>{status}</span>
+                </div>
+                <div className="center">
+                    <span className="location-badge">📍 {location}</span>
+                </div>
+                <div className="right">
+                    <span className={`insights-badge ${newInsights === 0 ? "empty" : ""}`}>
+                        {newInsights} new insights
+                    </span>
+                </div>
             </div>
 
             <h5 className="card-title">{name}</h5>
@@ -49,8 +57,13 @@ function ProjectCard({
                 </div>
             </div>
 
-            <div className="footer">
-                <span className="last-updated">Last Updated: {new Date(lastUpdated).toLocaleDateString()}</span>
+            <div className="footer-row">
+                <span className="last-updated">
+                    Last Updated: {lastUpdated.toLocaleDateString()}
+                </span>
+                <button className="view-button" onClick={() => navigate(`/projects/${id}`)}>
+                    View
+                </button>
             </div>
         </div>
     )

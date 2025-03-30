@@ -4,15 +4,17 @@ import { community } from "../../mock/CommunityUpdates"
 
 function CommunityUpdates() {
     return (
-        <>
+        <div className="community-list">
             {community.map((update) => (
-                <div key={update.id} className="community-card">
-                    <h5 className="card-title">{update.headline}</h5>
-                    <p>{update.summary}</p>
-                    <p className="date">{update.date}</p>
+                <div key={update.id} className="community-item">
+                    <div className="top-row">
+                        <h5 className="title">{update.headline}</h5>
+                        <span className="date">{update.date}</span>
+                    </div>
+                    <p className="summary">{update.summary}</p>
                 </div>
             ))}
-        </>
+        </div>
     )
 }
 
