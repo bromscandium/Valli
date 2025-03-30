@@ -1,0 +1,23 @@
+.scroll-container
+    display: flex
+    align-items: center
+    justify-content: center
+    min-height: calc(100vh - 160px)
+    text-align: center
+
+.community-title
+    font-size: 40px
+    font-weight: 700
+    background: linear-gradient(90deg, #da0967, #fa7202)
+    -webkit-background-clip: text
+    -webkit-text-fill-color: transparent
+    animation: gradient-rotate 3s linear infinite
+    background-size: 200% 200%
+
+@keyframes gradient-rotate
+    0%
+        background-position: 0% 50%
+    50%
+        background-position: 100% 50%
+    100%
+        background-position: 0% 50%

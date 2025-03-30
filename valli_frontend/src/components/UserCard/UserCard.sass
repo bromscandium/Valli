@@ -1,0 +1,33 @@
+.user-card
+    display: flex
+    align-items: center
+    background: white
+    border-radius: 16px
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1)
+    padding: 16px
+    gap: 16px
+    max-width: 100%
+    transition: transform 0.2s ease
+    &:hover
+        transform: translateY(-2px)
+
+.user-avatar
+    width: 64px
+    height: 64px
+    border-radius: 50%
+    object-fit: cover
+    border: 2px solid #da0967
+
+.user-info
+    display: flex
+    flex-direction: column
+    gap: 4px
+
+.user-name
+    font-size: 18px
+    font-weight: bold
+    color: #222
+
+.user-location
+    font-size: 14px
+    color: #777
