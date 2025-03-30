@@ -1,6 +1,5 @@
 import React, {useState} from "react"
 import {Helmet} from "react-helmet-async"
-import Header from "../../components/Header/Header.jsx"
 import "./Login.sass"
 
 function Login() {
@@ -16,7 +15,6 @@ function Login() {
             <Helmet>
                 <title>Valli | Login</title>
             </Helmet>
-            <Header/>
             <div className="login-container">
                 <div className="login-card">
                     <h1 className="login-title">Welcome Back</h1>

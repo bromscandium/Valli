@@ -1,25 +1,25 @@
-body
-    background-color: #f5f5f5
-
 .chat-page
     display: flex
     flex-direction: column
-    height: calc(100vh - 80px)
-    padding-top: 20px
+    height: 100dvh
+    overflow: hidden
+    background-color: #f5f5f5
 
-.chat-body
+.chat-container
     flex: 1
     display: flex
     flex-direction: column
-    padding: 80px 12px
+    overflow: hidden
+    position: relative
 
 .chat-messages
     flex: 1
     overflow-y: auto
+    padding: 100px 16px 230px
     display: flex
     flex-direction: column
     gap: 12px
-    padding-bottom: 80px
+    -webkit-overflow-scrolling: touch
 
 .message
     display: flex
@@ -32,15 +32,12 @@ body
 
 .bubble
     max-width: 80%
-    background-color: #e6e6e6
+    font-size: 18px
     padding: 12px
     border-radius: 16px
-    font-size: 16px
-    animation: fadeIn 0.2s ease-in-out
-    min-width: 100px
     word-wrap: break-word
-    word-break: break-word
     white-space: pre-wrap
+    animation: fadeIn 0.3s ease-in-out
 
 .user .bubble
     background-color: #da0967
@@ -49,8 +46,8 @@ body
 
 .bot .bubble
     background-color: white
-    border: 1px solid #fa7202
     color: #333
+    border: 1px solid #fa7202
     border-bottom-left-radius: 4px
 
 .meta
@@ -61,85 +58,73 @@ body
     margin-top: 6px
 
 .chat-input
-    position: fixed
+    position: absolute
     bottom: 80px
     left: 0
-    right: 0
-    background-color: #fff
-    padding: 10px
-    border-top: 1px solid #ddd
+    width: 100%
+    padding: 8px 16px
+    background: #fff
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.1)
     display: flex
     flex-direction: column
     gap: 8px
-    z-index: 99
-    transition: bottom 0.3s ease
 
-.session-control
-    display: flex
-    justify-content: flex-start
-
-.session-control button
-    display: flex
-    align-items: center
-    justify-content: center
-    background-color: #fff
-    border: 1px solid #ddd
-    padding: 8px
+.session-button
+    width: 100%
+    background-color: #da0967
+    color: white
+    padding: 10px
     border-radius: 10px
+    font-size: 16px
+    border: none
     cursor: pointer
-    width: 48px
-    height: 48px
     transition: background-color 0.2s
 
-.session-control button:hover
-    background-color: #f0f0f0
-
-.session-control img
-    width: 28px
-    height: 28px
+    &:hover
+        background-color: #910443
 
 .input-row
     display: flex
-    align-items: flex-end
+    align-items: center
     gap: 8px
 
 .text-input
     flex: 1
-    padding-left: 14px
-    padding-top: 20px
+    height: 64px
+    padding: 14px
     border-radius: 20px
     border: 1px solid #ccc
     font-size: 16px
-    outline: none
     resize: none
-    min-height: 64px
-    max-height: 120px
-    overflow-y: auto
-    line-height: 1.4
+    display: flex
+    align-items: center
+
+    &:hover
+        border: 1px solid #da0967
+        outline: none
 
 .input-actions
     display: flex
-    gap: 8px
+    gap: 4px
 
 .input-actions button
+    width: 64px
+    height: 64px
+    border-radius: 12px
+    border: 1px solid #ccc
+    background-color: #fff
+    cursor: pointer
     display: flex
     align-items: center
     justify-content: center
-    background-color: #fff
-    border: 1px solid #ddd
-    padding: 8px
-    border-radius: 12px
-    cursor: pointer
     transition: background-color 0.2s
-    width: 64px
-    height: 64px
 
-.input-actions button:hover
-    background-color: #f0f0f0
+    &:hover
+        background-color: #f0f0f0
 
-.input-actions img
-    width: 32px
-    height: 32px
+    img
+        width: 32px
+        height: 32px
 
 @keyframes fadeIn
     from

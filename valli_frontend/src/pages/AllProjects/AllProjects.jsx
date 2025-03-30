@@ -1,19 +1,19 @@
-import React from "react"
-import Header from "../../components/Header/Header.jsx"
+import React, {useEffect} from "react"
 import {Helmet} from "react-helmet-async"
 import ProjectCard from "../../components/ProjectCard/ProjectCard.jsx"
-import Footer from "../../components/Footer/Footer.jsx"
 import "./AllProjects.sass"
 import {projectsData} from "../../mock/ProjectsData.js"
 
-
 function AllProjects() {
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     return (
         <div className="all-projects">
             <Helmet>
                 <title>Valli | Projects</title>
             </Helmet>
-            <Header/>
             <div className="scroll-content">
                 <h4 className="section-title">Your Projects</h4>
                 {projectsData.map((project) => {
@@ -49,7 +49,6 @@ function AllProjects() {
                     )
                 })}
             </div>
-            <Footer/>
         </div>
     )
 }

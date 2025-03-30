@@ -1,7 +1,5 @@
-import React from "react"
+import React, {useEffect} from "react"
 import {Helmet} from "react-helmet-async"
-import Header from "../../components/Header/Header.jsx"
-import Footer from "../../components/Footer/Footer.jsx"
 import ProjectCard from "../../components/ProjectCard/ProjectCard.jsx"
 import UserCard from "../../components/UserCard/UserCard.jsx"
 import WeatherInsights from "../../components/WeatherInsights/WeatherInsights.jsx"
@@ -11,12 +9,15 @@ import {projectsData} from "../../mock/ProjectsData.js"
 
 
 function Home() {
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     return (
         <div className="home">
             <Helmet>
                 <title>Valli</title>
             </Helmet>
-            <Header/>
             <div className="scroll-content">
                 <UserCard/>
 
@@ -60,7 +61,6 @@ function Home() {
                 <h4 className="section-title">Community Updates</h4>
                 <CommunityUpdates/>
             </div>
-            <Footer/>
         </div>
     )
 }
