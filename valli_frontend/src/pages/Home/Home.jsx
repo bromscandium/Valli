@@ -1,5 +1,4 @@
 import React from "react"
-import {Link} from "react-router-dom"
 import Header from "../../components/Header/Header.jsx"
 import Footer from "../../components/Footer/Footer.jsx"
 import ProjectCard from "../../components/ProjectCard/ProjectCard.jsx"
@@ -7,7 +6,7 @@ import UserCard from "../../components/UserCard/UserCard.jsx"
 import WeatherInsights from "../../components/WeatherInsights/WeatherInsights.jsx"
 import CommunityUpdates from "../../components/CommunityUpdates/CommunityUpdates.jsx"
 import "./Home.sass"
-import {allProjectData} from "../../mock/AllProjectData.js"
+import {projectsData} from "../../mock/ProjectsData.js"
 
 function Home() {
     return (
@@ -16,23 +15,45 @@ function Home() {
             <div className="scroll-content">
                 <UserCard/>
 
-                <section className="section">
-                    <h4 className="section-title">Your Projects</h4>
-                    {allProjectData.slice(0, 3).map((project) => (
-                        <ProjectCard key={project.id} {...project} />
-                    ))}
-                    <Link to="/projects" className="view-more">Show more ➜</Link>
-                </section>
+                <h4 className="section-title">Your Projects</h4>
+                {projectsData.slice(0, 3).map((project) => {
+                    const {
+                        id,
+                        overviewData: {
+                            name,
+                            status,
+                            location,
+                            newInsights,
+                            lastUpdated,
+                        },
+                        healthMetricsData: {
+                            waterNeeds,
+                            frostRisk,
+                            soilHealth,
+                        },
+                    } = project
 
-                <section className="section">
-                    <h4 className="section-title">Weather Insights</h4>
-                    <WeatherInsights/>
-                </section>
+                    return (
+                        <ProjectCard
+                            key={id}
+                            id={id}
+                            name={name}
+                            status={status}
+                            location={location}
+                            newInsights={newInsights}
+                            lastUpdated={lastUpdated}
+                            waterNeeds={waterNeeds}
+                            frostRisk={frostRisk}
+                            soilHealth={soilHealth}
+                        />
+                    )
+                })}
 
-                <section className="section">
-                    <h4 className="section-title">Community Updates</h4>
-                    <CommunityUpdates/>
-                </section>
+                <h4 className="section-title">Weather Insights</h4>
+                <WeatherInsights/>
+
+                <h4 className="section-title">Community Updates</h4>
+                <CommunityUpdates/>
             </div>
             <Footer/>
         </div>

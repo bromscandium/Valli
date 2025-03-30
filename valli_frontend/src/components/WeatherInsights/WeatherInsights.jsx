@@ -1,10 +1,15 @@
 import React from "react"
 import "./WeatherInsights.sass"
-import { weather } from "../../mock/WeatherInsights"
+import {weather} from "../../mock/WeatherInsights"
+import {userInfo} from "../../mock/UserCard.js"
 
 function WeatherInsights() {
     return (
         <div className="weather-card">
+            <div className="weather-header">
+                <h4 className="location">📍 {userInfo.location}</h4>
+            </div>
+
             <div className="weather-main">
                 <div>
                     <h3 className="weather-temp">{weather.temp}</h3>
@@ -16,12 +21,14 @@ function WeatherInsights() {
                     <p className="weather-detail">💧 {weather.humidity} humidity</p>
                 </div>
             </div>
+
             <div className="weather-footer">
                 <p>🌤 {weather.condition}</p>
                 <p>🌧 {weather.rain} chance of rain</p>
             </div>
+
             <div className="weather-tip">
-                <p className="tip-text">💡{weather.tip}</p>
+                <p className="tip-text">💡 {weather.tip}</p>
             </div>
         </div>
     )

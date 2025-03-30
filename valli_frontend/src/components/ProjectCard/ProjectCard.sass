@@ -1,48 +1,77 @@
 .project-card
     background-color: #fff
     padding: 12px
+    margin-bottom: 16px
     border-radius: 12px
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1)
-    margin-bottom: 16px
-    font-family: 'Poppins', sans-serif
+
+    .card-title
+        font-size: 26px
+        font-weight: 700
+        margin-bottom: 28px
 
 .badges-row
     display: flex
     justify-content: space-between
     align-items: center
-    margin-bottom: 8px
+    margin-bottom: 24px
 
-.status-badge, .location-badge, .insights-badge
-    font-size: 14px
-    padding: 6px 10px
-    border-radius: 9999px
-    font-weight: 600
-    text-align: center
-    min-width: 60px
+.left, .center, .right
+    flex: 1
+    display: flex
+    align-items: center
+
+.left
+    justify-content: flex-start
+
+.center
+    justify-content: center
+
+.right
+    justify-content: flex-end
+
+.status-badge
+    padding: 4px 6px
+    border-radius: 6px
+    font-size: 18px
+    font-weight: bold
+    color: white
 
 .status-good
-    background-color: #00A651
+    background-color: #4CAF50
+
 .status-moderate
     background-color: #FFC107
-.status-bad
-    background-color: #FF3B30
-.status-unknown
-    background-color: #888
-.location-badge
-    color: #333
-.insights-badge
-    color: #fff
-    background-color: #1F3A93
+    color: #222
 
-.card-title
-    font-size: 18px
-    font-weight: 700
-    margin-bottom: 10px
+.status-bad
+    background-color: #F44336
+
+.status-unknown
+    background-color: #9E9E9E
+
+.location-badge
+    font-size: 16px
+    padding: 4px 8px
+    background: #f0f0f0
+    border-radius: 6px
+    color: #444
+
+.insights-badge
+    font-size: 16px
+    padding: 4px 8px
+    border-radius: 6px
+    background-color: #fa7202
+    color: white
+
+.insights-badge.empty
+    background-color: #ccc
+    color: #666
 
 .stats
     display: flex
     gap: 10px
-    margin-bottom: 12px
+    margin-bottom: 20px
 
 .metric
     padding: 10px
@@ -55,18 +84,37 @@
     gap: 4px
 
 .label
-    font-size: 12px
+    font-size: 19px
     color: #555
     font-weight: 500
 
 .value
-    font-size: 14px
+    font-size: 17px
     font-weight: 600
     color: #1F3A93
 
-.footer
-    margin-top: 10px
+.footer-row
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-top: 20px
 
 .last-updated
-    font-size: 12px
+    font-size: 18px
     color: #888
+
+.view-button
+    font-size: 22px
+    color: #fff
+    background: #fa7202
+    border: none
+    padding: 6px 24px
+    border-radius: 8px
+    font-weight: 600
+    cursor: pointer
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15)
+    transition: background 0.3s ease, transform 0.1s ease
+
+.view-button:hover
+    background: #da0967
+    transform: translateY(-1px)
