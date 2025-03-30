@@ -36,7 +36,7 @@ function Project() {
     return (
         <div className="project-page">
             <Helmet>
-                <title>Valli | {project.name}</title>
+                <title>{`Valli | ${project.name}`}</title>
             </Helmet>
 
             <div className="scroll-content">
