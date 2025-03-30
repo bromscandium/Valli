@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import { Helmet } from "react-helmet-async"
-import { projectsData } from "../../mock/ProjectsData"
+import {useParams, useNavigate} from "react-router-dom"
+import {Helmet} from "react-helmet-async"
+import {projectsData} from "../../mock/ProjectsData"
 
 import Header from "../../components/Header/Header"
 import Footer from "../../components/Footer/Footer"
@@ -16,7 +16,7 @@ import ProductRecommendation from "../../components/Project/ProductRecommendatio
 import "./Project.sass"
 
 function Project() {
-    const { id } = useParams()
+    const {id} = useParams()
     const navigate = useNavigate()
     const project = projectsData.find(p => p.id === Number(id))
 
@@ -31,7 +31,7 @@ function Project() {
                 <Header/>
                 <div className="project-not-found">
                     <h2>Project not found</h2>
-                    <button className="back-button" onClick={() => navigate(-1)}>← Back</button>
+                    <button className="back-button" onClick={() => navigate(-1)}>Back</button>
                 </div>
                 <Footer/>
             </div>
