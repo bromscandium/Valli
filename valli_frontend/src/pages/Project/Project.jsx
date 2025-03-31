@@ -9,9 +9,12 @@ import FieldAndCropDetails from "../../components/Project/FieldAndCropDetails/Fi
 import HealthMetrics from "../../components/Project/HealthMetrics/HealthMetrics.jsx"
 import Insights from "../../components/Project/Insights/Insights.jsx"
 import WaterUsage from "../../components/Project/WaterUsage/WaterUsage.jsx"
-import BiologicalAndRecommendations from "../../components/Project/BiologicalAndRecommendations/BiologicalAndRecommendations.jsx"
+import FinancialOverview from "../../components/Project/FinancialOverview/FinancialOverview.jsx";
+import BiologicalAndRecommendations
+    from "../../components/Project/BiologicalAndRecommendations/BiologicalAndRecommendations.jsx"
 
 import "./Project.sass"
+
 
 function Project() {
     const {id} = useParams()
@@ -36,7 +39,7 @@ function Project() {
     return (
         <div className="project-page">
             <Helmet>
-                <title>{`Valli | ${project.name}`}</title>
+                <title>{`Valli | ${project.overviewData.name}`}</title>
             </Helmet>
 
             <div className="scroll-content">
@@ -50,6 +53,7 @@ function Project() {
                 <HealthMetrics data={project.healthMetricsData}/>
                 <Insights data={project.insightsData}/>
                 <WaterUsage data={project.waterData}/>
+                <FinancialOverview data={project.financialOverview}/>
                 <BiologicalAndRecommendations data={project.bioAndRecommendationsData}/>
             </div>
         </div>

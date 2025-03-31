@@ -1,0 +1,104 @@
+.financial-overview-card
+    margin: 16px 10px
+    background: white
+    border-radius: 6px
+    padding: 0 24px 24px
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1)
+    display: flex
+    flex-direction: column
+    gap: 20px
+
+    .section-title
+        width: 100%
+        font-size: 28px
+        font-weight: 700
+        text-align: left
+        color: #000
+
+.tab-buttons
+    display: flex
+    gap: 12px
+
+.tab-button
+    padding: 6px 24px
+    border: 1px #bebebe solid
+    border-radius: 6px
+    cursor: pointer
+    background-color: #f9f9f9
+    font-weight: 600
+    font-size: 20px
+    transition: background-color 0.3s ease
+
+    &.active
+        background: linear-gradient(90deg, #da0967, #fa7202)
+        color: white
+
+.transaction-list
+    display: flex
+    flex-direction: column
+    gap: 16px
+
+.transaction-item
+    display: flex
+    justify-content: space-between
+    align-items: flex-end
+    border-bottom: 1px solid #eee
+    padding-bottom: 12px
+
+.transaction-left
+    display: flex
+    align-items: center
+    font-size: 22px
+
+.category
+    font-weight: 600
+    white-space: nowrap
+
+.amount-block
+    display: flex
+    flex-direction: column
+    align-items: flex-end
+
+.amount
+    font-size: 20px
+    font-weight: 600
+    color: #000
+    margin-bottom: -4px
+
+.description
+    font-size: 12px
+    color: #777
+
+
+.chart-wrapper
+    padding: 6px
+
+    .chart-content
+        max-width: 400px
+        margin: 0 auto
+
+.custom-legend
+    display: flex
+    flex-direction: column
+    gap: 8px
+    margin-top: 16px
+    font-size: 16px
+
+.legend-item
+    display: flex
+    align-items: center
+    gap: 10px
+
+.legend-color
+    width: 14px
+    height: 14px
+    border-radius: 50%
+    flex-shrink: 0
+
+.legend-text
+    font-weight: 500
+    color: #333
+    font-size: 18px
+
+    .info
+        font-weight: 700

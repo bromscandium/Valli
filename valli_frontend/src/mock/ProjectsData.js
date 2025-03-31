@@ -81,6 +81,21 @@ export const projectsData = [
                 }
             ]
         },
+        /*Financial Overview*/
+        financialOverview: {
+            transactions: [
+                {category: '📈 Estimated Profit', amount: 18000, unit: '₹', description: 'per acre'},
+                {category: '🌾 Yield Expectation', amount: 2100, unit: 'kg', description: 'per acre'},
+                {category: '💰 Expected Revenue', amount: 52000, unit: '₹', description: 'per acre'},
+                {category: '💸 Total Cost', amount: 34000, unit: '₹', description: 'per acre'},
+                {category: '📊 Price Trends', amount: 'Up 4%', unit: '', description: 'this month'},
+            ],
+            summaryData: {
+                labels: ['Seeds & Fertilizers', 'Irrigation Costs', 'Labor & Machinery', 'Electricity & Fuel', 'Protection'],
+                data: [20000, 20000, 50000, 80000, 80000],
+                colors: ['#66BB6A', '#42A5F5', '#FFA726', '#AB47BC', '#FF7043']
+            }
+        },
 
         /*Insights*/
         insightsData: {
@@ -225,6 +240,21 @@ export const projectsData = [
                     result: "Enhanced leaf development",
                 },
             ],
+        },
+        /*Financial Overview*/
+        financialOverview: {
+            transactions: [
+                {category: '📈 Estimated Profit', amount: 18000, unit: '₹', description: 'per acre'},
+                {category: '🌾 Yield Expectation', amount: 2100, unit: 'kg', description: 'per acre'},
+                {category: '💰 Expected Revenue', amount: 52000, unit: '₹', description: 'per acre'},
+                {category: '💸 Total Cost', amount: 34000, unit: '₹', description: 'per acre'},
+                {category: '📊 Price Trends', amount: 'Up 4%', unit: '', description: 'this month'},
+            ],
+            summaryData: {
+                labels: ['Seeds', 'Watering & Irrigation', 'Labor', 'Machinery', 'Pest Control'],
+                data: [15000, 18000, 25000, 30000, 20000],
+                colors: ['#81C784', '#4FC3F7', '#FFB74D', '#9575CD', '#EF5350']
+            }
         },
 
         /*Insights*/
@@ -372,6 +402,23 @@ export const projectsData = [
                 },
             ],
         },
+        /*Financial Overview*/
+        financialOverview: {
+            transactions: [
+                {category: '📈 Estimated Profit', amount: 18000, unit: '₹', description: 'per acre'},
+                {category: '🌾 Yield Expectation', amount: 2100, unit: 'kg', description: 'per acre'},
+                {category: '💰 Expected Revenue', amount: 52000, unit: '₹', description: 'per acre'},
+                {category: '💸 Total Cost', amount: 34000, unit: '₹', description: 'per acre'},
+                {category: '📊 Price Trends', amount: 'Up 4%', unit: '', description: 'this month'},
+            ],
+            summaryData: {
+                labels: ['Soil Enhancers', 'Drip Setup', 'Labor', 'Bio Products', 'Fertilizer'],
+                data: [12000, 15000, 22000, 18000, 25000],
+                colors: ['#AED581', '#4DD0E1', '#FF8A65', '#BA68C8', '#FFD54F']
+            }
+        },
+
+
         /*Insights*/
         insightsData: {
             environmentInsights: [
@@ -515,6 +562,21 @@ export const projectsData = [
                     result: "Increased microbial activity",
                 },
             ],
+        },
+        /*Financial Overview*/
+        financialOverview: {
+            transactions: [
+                {category: '📈 Estimated Profit', amount: 18000, unit: '₹', description: 'per acre'},
+                {category: '🌾 Yield Expectation', amount: 2100, unit: 'kg', description: 'per acre'},
+                {category: '💰 Expected Revenue', amount: 52000, unit: '₹', description: 'per acre'},
+                {category: '💸 Total Cost', amount: 34000, unit: '₹', description: 'per acre'},
+                {category: '📊 Price Trends', amount: 'Up 4%', unit: '', description: 'this month'},
+            ],
+            summaryData: {
+                labels: ['Seedlings', 'Irrigation', 'Manual Labor', 'Fuel', 'Nutrient Boosters'],
+                data: [18000, 20000, 27000, 15000, 22000],
+                colors: ['#66BB6A', '#29B6F6', '#FFCA28', '#8D6E63', '#D4E157']
+            }
         },
 
         /*Insights*/
