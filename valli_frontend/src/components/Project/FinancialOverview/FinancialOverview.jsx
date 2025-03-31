@@ -25,7 +25,7 @@ const FinancialOverview = ({data}) => {
         <section className="financial-overview-card">
             <h2 className="section-title">Financial Overview</h2>
 
-            <div className="tab-buttons">
+            <div className="tab-buttons2">
                 {["Overview", "Cost Breakdown"].map((tab) => (
                     <button
                         key={tab}
