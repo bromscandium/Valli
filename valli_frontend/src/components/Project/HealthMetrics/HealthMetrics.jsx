@@ -1,14 +1,9 @@
-import React from "react"
-import {Bar} from "react-chartjs-2"
-import {
-    Chart as ChartJS,
-    BarElement,
-    CategoryScale,
-    LinearScale,
-    Tooltip,
-    Legend
-} from "chart.js"
-import "./HealthMetrics.sass"
+import React from "react";
+import {Bar} from "react-chartjs-2";
+import {Chart, CategoryScale, LinearScale, BarElement, Tooltip, Legend} from "chart.js";
+import "./HealthMetrics.sass";
+
+Chart.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const HealthMetrics = ({data}) => {
     const {
@@ -64,7 +59,21 @@ const HealthMetrics = ({data}) => {
                 <Bar
                     data={chartData}
                     options={{
-                        plugins: {legend: {display: false}},
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                bodyFont: {
+                                    family: 'Poppins',
+                                    size: 14,
+                                },
+                                titleFont: {
+                                    family: 'Poppins',
+                                    size: 14,
+                                },
+                            }
+                        },
                         responsive: true,
                         scales: {
                             x: {
@@ -73,7 +82,8 @@ const HealthMetrics = ({data}) => {
                             y: {
                                 display: false,
                             }
-                        }
+                        },
+
                     }}
                 />
             </div>

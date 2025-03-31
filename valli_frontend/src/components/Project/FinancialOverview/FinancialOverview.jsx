@@ -66,7 +66,16 @@ const FinancialOverview = ({data}) => {
                                 plugins: {
                                     legend: {
                                         display: false,
-                                    },
+                                    }, tooltip: {
+                                        bodyFont: {
+                                            family: 'Poppins',
+                                            size: 14,
+                                        },
+                                        titleFont: {
+                                            family: 'Poppins',
+                                            size: 14,
+                                        },
+                                    }
                                 },
                             }}
                         />
