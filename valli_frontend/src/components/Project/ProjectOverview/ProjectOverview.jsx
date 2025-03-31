@@ -1,8 +1,8 @@
-import React from "react"
-import "./ProjectOverview.sass"
+import React from "react";
+import "./ProjectOverview.sass";
 
-const ProjectOverview = ({data}) => {
-    const {name, location, type, objective} = data
+const ProjectOverview = ({ data }) => {
+    const { name, location, type, objective } = data;
 
     return (
         <section className="project-overview">
@@ -19,7 +19,7 @@ const ProjectOverview = ({data}) => {
                 <span className="label">Objective: {objective}</span>
             </div>
         </section>
-    )
-}
+    );
+};
 
-export default ProjectOverview
+export default ProjectOverview;

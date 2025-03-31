@@ -1,6 +1,6 @@
-import React from "react"
-import { Helmet } from "react-helmet-async"
-import "./Profile.sass"
+import React from "react";
+import { Helmet } from "react-helmet-async";
+import "./Profile.sass";
 
 function Profile() {
     return (
@@ -13,7 +13,7 @@ function Profile() {
                 <h1 className="profile-title">Soon...</h1>
             </div>
         </div>
-    )
+    );
 }
 
-export default Profile
+export default Profile;

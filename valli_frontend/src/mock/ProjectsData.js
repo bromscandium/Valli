@@ -1,172 +1,190 @@
-export const projectsData = [
-    {
-        id: 1,
+export const projectsData = [{
+    id: 1,
 
-        /*Project Overview*/
-        overviewData: {
-            public: true,
-            name: "First Project",
-            status: "Good",
-            location: "New Delhi",
-            type: "Wheat Field",
-            objective: "Grow more",
-            newInsights: 3,
-            lastUpdated: new Date(),
+    /*Project Overview*/
+    overviewData: {
+        public: true,
+        name: "First Project",
+        status: "Good",
+        location: "New Delhi",
+        type: "Wheat Field",
+        objective: "Grow more",
+        newInsights: 3,
+        lastUpdated: new Date(),
+    },
+
+    /*Field And Crop Details*/
+    fieldAndCropDetails: {
+        size: "5",
+        stage: "Planning",
+        irrigationMethod: "Canal",
+    },
+
+    /*Health Metrics*/
+    healthMetricsData: {
+        bar: 90,
+        dayHeatStress: 6,
+        nightHeatStress: 3,
+        waterNeeds: "Medium",
+        frostRisk: "Low",
+        soilHealth: 80,
+    },
+
+    /*Water Usage*/
+    waterData: {
+        waterSources: {
+            labels: ["Tube Wells", "Canal", "Sprinkler", "Drip"],
+            data: [52, 22.8, 13.9, 11.3],
+            colors: ["#4CAF50", "#2196F3", "#FFC107", "#FF5722"],
         },
-
-        /*Field And Crop Details*/
-        fieldAndCropDetails: {
-            size: "5",
-            stage: "Planning",
-            irrigationMethod: "Canal",
-        },
-
-        /*Health Metrics*/
-        healthMetricsData: {
-            bar: 90,
-            dayHeatStress: 6,
-            nightHeatStress: 3,
-            waterNeeds: "Medium",
-            frostRisk: "Low",
-            soilHealth: 80,
-        },
-
-        /*Water Usage*/
-        waterData: {
-            waterSources: {
-                labels: ["Tube Wells", "Canal", "Sprinkler", "Drip"],
-                data: [52, 22.8, 13.9, 11.3],
-                colors: ["#4CAF50", "#2196F3", "#FFC107", "#FF5722"],
+        waterUsage: {
+            current: 22000,
+            estimated: 15000,
+            colors: {
+                current: "#1F3A93",
+                estimated: "#FFC107",
             },
-            waterUsage: {
-                current: 22000,
-                estimated: 15000,
-                colors: {
-                    current: "#1F3A93",
-                    estimated: "#FFC107",
-                },
-            },
-        },
-
-        /*Biological And Recommendations*/
-        bioAndRecommendationsData: {
-            listProductsData: [
-                {
-                    header: {
-                        title: "🌿 Stress Buster",
-                        subtitle: "Anti-Stress & Growth Activator",
-                    },
-                    description: "A bio-stimulant that helps plants tolerate and recover from abiotic stress (cold, heat, drought, wounding), preserving yield.",
-                    link: "https://example.com/stress-buster"
-                },
-                {
-                    header: {
-                        title: "🌾 Yield Booster",
-                        subtitle: "Root Development Enhancer",
-                    },
-                    description: "Improves nutrient uptake and boosts early-stage root growth for better yield.",
-                    link: "https://example.com/yield-booster"
-                },
-            ],
-            usageHistory: [
-                {
-                    name: "Stress Buster",
-                    date: new Date(),
-                    result: null
-                },
-                {
-                    name: "Yield Booster",
-                    date: new Date(),
-                    result: "Grows more"
-                }
-            ]
-        },
-        /*Financial Overview*/
-        financialOverview: {
-            transactions: [
-                {category: '📈 Estimated Profit', amount: 18000, unit: '₹', description: 'per acre'},
-                {category: '🌾 Yield Expectation', amount: 2100, unit: 'kg', description: 'per acre'},
-                {category: '💰 Expected Revenue', amount: 52000, unit: '₹', description: 'per acre'},
-                {category: '💸 Total Cost', amount: 34000, unit: '₹', description: 'per acre'},
-                {category: '📊 Price Trends', amount: 'Up 4%', unit: '', description: 'this month'},
-            ],
-            summaryData: {
-                labels: ['Seeds & Fertilizers', 'Irrigation Costs', 'Labor & Machinery', 'Electricity & Fuel', 'Protection'],
-                data: [20000, 20000, 50000, 80000, 80000],
-                colors: ['#66BB6A', '#42A5F5', '#FFA726', '#AB47BC', '#FF7043']
-            }
-        },
-
-        /*Insights*/
-        insightsData: {
-            environmentInsights: [
-                {
-                    title: "🌱 Growth Efficiency",
-                    description: "Your Wheat crop is growing 12% faster compared to the regional average.",
-                },
-                {
-                    title: "💧 Water Efficiency",
-                    description: "Your current water usage is 18% lower than local benchmarks for wheat.",
-                },
-                {
-                    title: "🌧 Rainfall Utilization",
-                    description: "Rain forecast of 25 mm this week may reduce irrigation needs by ~12%.",
-                },
-                {
-                    title: "🌡 Heat Stress Outlook",
-                    description: "Daytime heat stress is moderate (5/9), monitor crop resilience closely.",
-                },
-                {
-                    title: "📉 Seasonal Water Use Comparison",
-                    description: "Estimated total use: 18,000 m³ (3,600 m³/acre) — efficient for this stage.",
-                },
-            ],
-            businessInsights: [
-                {
-                    title: "🌾 Yield Prediction",
-                    description: "Expected wheat yield is 9% above average due to early planting and stable weather.",
-                },
-                {
-                    title: "💰 Market Price Forecast",
-                    description: "Wheat prices projected to increase by 6% during harvest window (Sept 15–25).",
-                },
-                {
-                    title: "⏳ Harvest Timing Recommendation",
-                    description: "Ideal harvest time is Sept 18–22 to align with peak market demand.",
-                },
-                {
-                    title: "🧑‍🌾 Labor & Machinery Cost Insights",
-                    description: "Mechanical harvesting could save up to 12% in operational expenses.",
-                },
-                {
-                    title: "🚜 Resource Efficiency",
-                    description: "Canal irrigation is cost-effective; no change needed for current season.",
-                }
-            ],
-            protectionInsights: [
-                {
-                    title: "🛡 Recommended Biological Products",
-                    description: "Applying 'Stress Buster' this week can reduce early heat stress impact.",
-                },
-                {
-                    title: "🐛 Pest & Disease Alert",
-                    description: "Minor aphid activity spotted regionally — monitor closely.",
-                },
-                {
-                    title: "⚠️ Frost Risk",
-                    description: "Frost risk is minimal until October, no actions required now.",
-                },
-                {
-                    title: "💦 Irrigation Risk",
-                    description: "Canal-based irrigation may be affected by upcoming dry spell — stay alert.",
-                },
-                {
-                    title: "✅ Soil Protection Recommendations",
-                    description: "Soil is in good shape (80%). Consider 'Yield Booster' for nutrient balancing.",
-                },
-            ],
         },
     },
+
+    /*Biological And Recommendations*/
+    bioAndRecommendationsData: {
+        listProductsData: [{
+            header: {
+                title: "🌿 Stress Buster",
+                subtitle: "Anti-Stress & Growth Activator",
+            },
+            description: "A bio-stimulant that helps plants tolerate and recover from abiotic stress (cold, heat, drought, wounding), preserving yield.",
+            link: "https://example.com/stress-buster"
+        },
+            {
+                header: {
+                    title: "🌾 Yield Booster",
+                    subtitle: "Root Development Enhancer",
+                },
+                description: "Improves nutrient uptake and boosts early-stage root growth for better yield.",
+                link: "https://example.com/yield-booster"
+            },
+        ],
+        usageHistory: [{
+            name: "Stress Buster",
+            date: new Date(),
+            result: null
+        },
+            {
+                name: "Yield Booster",
+                date: new Date(),
+                result: "Grows more"
+            }
+        ]
+    },
+    /*Financial Overview*/
+    financialOverview: {
+        transactions: [{
+            category: '📈 Estimated Profit',
+            amount: 18000,
+            unit: '₹',
+            description: 'per acre'
+        },
+            {
+                category: '🌾 Yield Expectation',
+                amount: 2100,
+                unit: 'kg',
+                description: 'per acre'
+            },
+            {
+                category: '💰 Expected Revenue',
+                amount: 52000,
+                unit: '₹',
+                description: 'per acre'
+            },
+            {
+                category: '💸 Total Cost',
+                amount: 34000,
+                unit: '₹',
+                description: 'per acre'
+            },
+            {
+                category: '📊 Price Trends',
+                amount: 'Up 4%',
+                unit: '',
+                description: 'this month'
+            },
+        ],
+        summaryData: {
+            labels: ['Seeds & Fertilizers', 'Irrigation Costs', 'Labor & Machinery', 'Electricity & Fuel', 'Protection'],
+            data: [20000, 20000, 50000, 80000, 80000],
+            colors: ['#66BB6A', '#42A5F5', '#FFA726', '#AB47BC', '#FF7043']
+        }
+    },
+
+    /*Insights*/
+    insightsData: {
+        environmentInsights: [{
+            title: "🌱 Growth Efficiency",
+            description: "Your Wheat crop is growing 12% faster compared to the regional average.",
+        },
+            {
+                title: "💧 Water Efficiency",
+                description: "Your current water usage is 18% lower than local benchmarks for wheat.",
+            },
+            {
+                title: "🌧 Rainfall Utilization",
+                description: "Rain forecast of 25 mm this week may reduce irrigation needs by ~12%.",
+            },
+            {
+                title: "🌡 Heat Stress Outlook",
+                description: "Daytime heat stress is moderate (5/9), monitor crop resilience closely.",
+            },
+            {
+                title: "📉 Seasonal Water Use Comparison",
+                description: "Estimated total use: 18,000 m³ (3,600 m³/acre) — efficient for this stage.",
+            },
+        ],
+        businessInsights: [{
+            title: "🌾 Yield Prediction",
+            description: "Expected wheat yield is 9% above average due to early planting and stable weather.",
+        },
+            {
+                title: "💰 Market Price Forecast",
+                description: "Wheat prices projected to increase by 6% during harvest window (Sept 15–25).",
+            },
+            {
+                title: "⏳ Harvest Timing Recommendation",
+                description: "Ideal harvest time is Sept 18–22 to align with peak market demand.",
+            },
+            {
+                title: "🧑‍🌾 Labor & Machinery Cost Insights",
+                description: "Mechanical harvesting could save up to 12% in operational expenses.",
+            },
+            {
+                title: "🚜 Resource Efficiency",
+                description: "Canal irrigation is cost-effective; no change needed for current season.",
+            }
+        ],
+        protectionInsights: [{
+            title: "🛡 Recommended Biological Products",
+            description: "Applying 'Stress Buster' this week can reduce early heat stress impact.",
+        },
+            {
+                title: "🐛 Pest & Disease Alert",
+                description: "Minor aphid activity spotted regionally — monitor closely.",
+            },
+            {
+                title: "⚠️ Frost Risk",
+                description: "Frost risk is minimal until October, no actions required now.",
+            },
+            {
+                title: "💦 Irrigation Risk",
+                description: "Canal-based irrigation may be affected by upcoming dry spell — stay alert.",
+            },
+            {
+                title: "✅ Soil Protection Recommendations",
+                description: "Soil is in good shape (80%). Consider 'Yield Booster' for nutrient balancing.",
+            },
+        ],
+    },
+},
     {
         id: 2,
 
@@ -218,22 +236,19 @@ export const projectsData = [
 
         /*Biological And Recommendations*/
         bioAndRecommendationsData: {
-            listProductsData: [
-                {
-                    header: {
-                        title: "🛡 Pest Guard",
-                        subtitle: "Biological Protection from Common Corn Pests",
-                    },
-                    description: "An eco-friendly bio-product that builds natural resistance to aphids and beetles. Enhances immunity and improves resilience in early growth stages.",
-                    link: "https://www.example-bio.com/pest-guard"
-                }
-            ],
-            usageHistory: [
-                {
-                    name: "Pest Guard",
-                    date: new Date("2023-06-12"),
-                    result: "Reduced pest activity significantly",
+            listProductsData: [{
+                header: {
+                    title: "🛡 Pest Guard",
+                    subtitle: "Biological Protection from Common Corn Pests",
                 },
+                description: "An eco-friendly bio-product that builds natural resistance to aphids and beetles. Enhances immunity and improves resilience in early growth stages.",
+                link: "https://www.example-bio.com/pest-guard"
+            }],
+            usageHistory: [{
+                name: "Pest Guard",
+                date: new Date("2023-06-12"),
+                result: "Reduced pest activity significantly",
+            },
                 {
                     name: "Nitro Boost",
                     date: new Date("2023-07-02"),
@@ -243,12 +258,36 @@ export const projectsData = [
         },
         /*Financial Overview*/
         financialOverview: {
-            transactions: [
-                {category: '📈 Estimated Profit', amount: 18000, unit: '₹', description: 'per acre'},
-                {category: '🌾 Yield Expectation', amount: 2100, unit: 'kg', description: 'per acre'},
-                {category: '💰 Expected Revenue', amount: 52000, unit: '₹', description: 'per acre'},
-                {category: '💸 Total Cost', amount: 34000, unit: '₹', description: 'per acre'},
-                {category: '📊 Price Trends', amount: 'Up 4%', unit: '', description: 'this month'},
+            transactions: [{
+                category: '📈 Estimated Profit',
+                amount: 18000,
+                unit: '₹',
+                description: 'per acre'
+            },
+                {
+                    category: '🌾 Yield Expectation',
+                    amount: 2100,
+                    unit: 'kg',
+                    description: 'per acre'
+                },
+                {
+                    category: '💰 Expected Revenue',
+                    amount: 52000,
+                    unit: '₹',
+                    description: 'per acre'
+                },
+                {
+                    category: '💸 Total Cost',
+                    amount: 34000,
+                    unit: '₹',
+                    description: 'per acre'
+                },
+                {
+                    category: '📊 Price Trends',
+                    amount: 'Up 4%',
+                    unit: '',
+                    description: 'this month'
+                },
             ],
             summaryData: {
                 labels: ['Seeds', 'Watering & Irrigation', 'Labor', 'Machinery', 'Pest Control'],
@@ -259,11 +298,10 @@ export const projectsData = [
 
         /*Insights*/
         insightsData: {
-            environmentInsights: [
-                {
-                    title: "🌱 Growth Efficiency",
-                    description: "Corn is showing 5% slower growth vs. regional average due to late planting.",
-                },
+            environmentInsights: [{
+                title: "🌱 Growth Efficiency",
+                description: "Corn is showing 5% slower growth vs. regional average due to late planting.",
+            },
                 {
                     title: "💧 Water Efficiency",
                     description: "Water use is within normal limits but has room for 10% optimization.",
@@ -281,11 +319,10 @@ export const projectsData = [
                     description: "Estimated: 24,000 m³ (4,800 m³/acre) — just above sustainable level.",
                 },
             ],
-            businessInsights: [
-                {
-                    title: "🌾 Yield Prediction",
-                    description: "Corn yield might be 5% below average due to late sowing and heatwaves.",
-                },
+            businessInsights: [{
+                title: "🌾 Yield Prediction",
+                description: "Corn yield might be 5% below average due to late sowing and heatwaves.",
+            },
                 {
                     title: "💰 Market Price Forecast",
                     description: "Corn prices remain stable with minor expected growth of 2–3% by October.",
@@ -303,11 +340,10 @@ export const projectsData = [
                     description: "Sprinkler system may increase water cost; consider partial automation.",
                 },
             ],
-            protectionInsights: [
-                {
-                    title: "🛡 Recommended Biological Products",
-                    description: "'Root Shield' is suggested to prevent early-stage nematode infestation.",
-                },
+            protectionInsights: [{
+                title: "🛡 Recommended Biological Products",
+                description: "'Root Shield' is suggested to prevent early-stage nematode infestation.",
+            },
                 {
                     title: "🐛 Pest & Disease Alert",
                     description: "Increased beetle presence expected post-rain — apply early deterrent.",
@@ -379,22 +415,19 @@ export const projectsData = [
 
         /*Biological And Recommendations*/
         bioAndRecommendationsData: {
-            listProductsData: [
-                {
-                    header: {
-                        title: "💧 Hydro Sync",
-                        subtitle: "Smart Water Balancer",
-                    },
-                    description: "Balances water distribution and reduces over-saturation during heavy rainfall. Improves rice root stability.",
-                    link: "https://www.example-bio.com/hydro-sync",
-                }
-            ],
-            usageHistory: [
-                {
-                    name: "Hydro Sync",
-                    date: new Date("2023-06-20"),
-                    result: "Water usage optimized",
+            listProductsData: [{
+                header: {
+                    title: "💧 Hydro Sync",
+                    subtitle: "Smart Water Balancer",
                 },
+                description: "Balances water distribution and reduces over-saturation during heavy rainfall. Improves rice root stability.",
+                link: "https://www.example-bio.com/hydro-sync",
+            }],
+            usageHistory: [{
+                name: "Hydro Sync",
+                date: new Date("2023-06-20"),
+                result: "Water usage optimized",
+            },
                 {
                     name: "Harvest Helper",
                     date: new Date("2023-07-10"),
@@ -404,12 +437,36 @@ export const projectsData = [
         },
         /*Financial Overview*/
         financialOverview: {
-            transactions: [
-                {category: '📈 Estimated Profit', amount: 18000, unit: '₹', description: 'per acre'},
-                {category: '🌾 Yield Expectation', amount: 2100, unit: 'kg', description: 'per acre'},
-                {category: '💰 Expected Revenue', amount: 52000, unit: '₹', description: 'per acre'},
-                {category: '💸 Total Cost', amount: 34000, unit: '₹', description: 'per acre'},
-                {category: '📊 Price Trends', amount: 'Up 4%', unit: '', description: 'this month'},
+            transactions: [{
+                category: '📈 Estimated Profit',
+                amount: 18000,
+                unit: '₹',
+                description: 'per acre'
+            },
+                {
+                    category: '🌾 Yield Expectation',
+                    amount: 2100,
+                    unit: 'kg',
+                    description: 'per acre'
+                },
+                {
+                    category: '💰 Expected Revenue',
+                    amount: 52000,
+                    unit: '₹',
+                    description: 'per acre'
+                },
+                {
+                    category: '💸 Total Cost',
+                    amount: 34000,
+                    unit: '₹',
+                    description: 'per acre'
+                },
+                {
+                    category: '📊 Price Trends',
+                    amount: 'Up 4%',
+                    unit: '',
+                    description: 'this month'
+                },
             ],
             summaryData: {
                 labels: ['Soil Enhancers', 'Drip Setup', 'Labor', 'Bio Products', 'Fertilizer'],
@@ -421,11 +478,10 @@ export const projectsData = [
 
         /*Insights*/
         insightsData: {
-            environmentInsights: [
-                {
-                    title: "🌱 Growth Efficiency",
-                    description: "Your Rice crop is growing 15% faster compared to the regional average.",
-                },
+            environmentInsights: [{
+                title: "🌱 Growth Efficiency",
+                description: "Your Rice crop is growing 15% faster compared to the regional average.",
+            },
                 {
                     title: "💧 Water Efficiency",
                     description: "Your current water usage is 20% lower compared to the average regional farmer this season.",
@@ -443,11 +499,10 @@ export const projectsData = [
                     description: "Estimated seasonal water use: 27,500 m³ total (5,500 m³/acre), which is within sustainable limits for your region.",
                 },
             ],
-            businessInsights: [
-                {
-                    title: "🌾 Yield Prediction",
-                    description: "Based on current growth, your estimated yield is 8–10% above the regional average.",
-                },
+            businessInsights: [{
+                title: "🌾 Yield Prediction",
+                description: "Based on current growth, your estimated yield is 8–10% above the regional average.",
+            },
                 {
                     title: "💰 Market Price Forecast",
                     description: "Rice prices are projected to rise by approximately 7% around your estimated harvest date (Nov 25–30).",
@@ -465,11 +520,10 @@ export const projectsData = [
                     description: "Your current irrigation method (Tube wells) is cost-efficient, but transitioning to drip irrigation could further reduce costs by ~10–20% next season.",
                 },
             ],
-            protectionInsights: [
-                {
-                    title: "🛡 Recommended Biological Products",
-                    description: "Applying 'Stress Buster' can reduce risks related to upcoming mild nighttime heat stress, preserving crop health.",
-                },
+            protectionInsights: [{
+                title: "🛡 Recommended Biological Products",
+                description: "Applying 'Stress Buster' can reduce risks related to upcoming mild nighttime heat stress, preserving crop health.",
+            },
                 {
                     title: "🐛 Pest & Disease Alert",
                     description: "No significant pest or disease risks detected in your region currently. Regular monitoring is advised.",
@@ -540,22 +594,19 @@ export const projectsData = [
 
         /*Biological And Recommendations*/
         bioAndRecommendationsData: {
-            listProductsData: [
-                {
-                    header: {
-                        title: "🧬 Root Energizer",
-                        subtitle: "Frost-Ready Root Booster",
-                    },
-                    description: "Prepares barley roots for harsh conditions and improves nutrient uptake in cold climates.",
-                    link: "https://www.example-bio.com/root-energizer",
-                }
-            ],
-            usageHistory: [
-                {
-                    name: "Root Energizer",
-                    date: new Date("2023-10-10"),
-                    result: "Stronger roots under frost",
+            listProductsData: [{
+                header: {
+                    title: "🧬 Root Energizer",
+                    subtitle: "Frost-Ready Root Booster",
                 },
+                description: "Prepares barley roots for harsh conditions and improves nutrient uptake in cold climates.",
+                link: "https://www.example-bio.com/root-energizer",
+            }],
+            usageHistory: [{
+                name: "Root Energizer",
+                date: new Date("2023-10-10"),
+                result: "Stronger roots under frost",
+            },
                 {
                     name: "Soil Activator",
                     date: new Date("2023-09-22"),
@@ -565,12 +616,36 @@ export const projectsData = [
         },
         /*Financial Overview*/
         financialOverview: {
-            transactions: [
-                {category: '📈 Estimated Profit', amount: 18000, unit: '₹', description: 'per acre'},
-                {category: '🌾 Yield Expectation', amount: 2100, unit: 'kg', description: 'per acre'},
-                {category: '💰 Expected Revenue', amount: 52000, unit: '₹', description: 'per acre'},
-                {category: '💸 Total Cost', amount: 34000, unit: '₹', description: 'per acre'},
-                {category: '📊 Price Trends', amount: 'Up 4%', unit: '', description: 'this month'},
+            transactions: [{
+                category: '📈 Estimated Profit',
+                amount: 18000,
+                unit: '₹',
+                description: 'per acre'
+            },
+                {
+                    category: '🌾 Yield Expectation',
+                    amount: 2100,
+                    unit: 'kg',
+                    description: 'per acre'
+                },
+                {
+                    category: '💰 Expected Revenue',
+                    amount: 52000,
+                    unit: '₹',
+                    description: 'per acre'
+                },
+                {
+                    category: '💸 Total Cost',
+                    amount: 34000,
+                    unit: '₹',
+                    description: 'per acre'
+                },
+                {
+                    category: '📊 Price Trends',
+                    amount: 'Up 4%',
+                    unit: '',
+                    description: 'this month'
+                },
             ],
             summaryData: {
                 labels: ['Seedlings', 'Irrigation', 'Manual Labor', 'Fuel', 'Nutrient Boosters'],
@@ -581,11 +656,10 @@ export const projectsData = [
 
         /*Insights*/
         insightsData: {
-            environmentInsights: [
-                {
-                    title: "🌱 Growth Efficiency",
-                    description: "Barley growth is on par with other regional fields.",
-                },
+            environmentInsights: [{
+                title: "🌱 Growth Efficiency",
+                description: "Barley growth is on par with other regional fields.",
+            },
                 {
                     title: "💧 Water Efficiency",
                     description: "Your drip irrigation provides 25% better water savings vs. average farms.",
@@ -603,11 +677,10 @@ export const projectsData = [
                     description: "Projected use: 15,000 m³ (3,000 m³/acre) — excellent efficiency.",
                 },
             ],
-            businessInsights: [
-                {
-                    title: "🌾 Yield Prediction",
-                    description: "Barley expected to yield 10% above average due to high soil quality and minimal stress.",
-                },
+            businessInsights: [{
+                title: "🌾 Yield Prediction",
+                description: "Barley expected to yield 10% above average due to high soil quality and minimal stress.",
+            },
                 {
                     title: "💰 Market Price Forecast",
                     description: "Forecasts suggest barley prices may rise 4–6% during early December.",
@@ -625,11 +698,10 @@ export const projectsData = [
                     description: "Your drip irrigation setup is already among the most cost-effective in the region.",
                 },
             ],
-            protectionInsights: [
-                {
-                    title: "🛡 Recommended Biological Products",
-                    description: "'Root Energizer' helps increase frost resistance at root level.",
-                },
+            protectionInsights: [{
+                title: "🛡 Recommended Biological Products",
+                description: "'Root Energizer' helps increase frost resistance at root level.",
+            },
                 {
                     title: "🐛 Pest & Disease Alert",
                     description: "No major pests observed, but weekly inspections are encouraged.",

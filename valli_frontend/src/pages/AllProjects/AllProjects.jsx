@@ -1,13 +1,13 @@
-import React, {useEffect} from "react"
-import {Helmet} from "react-helmet-async"
-import ProjectCard from "../../components/ProjectCard/ProjectCard.jsx"
-import "./AllProjects.sass"
-import {projectsData} from "../../mock/ProjectsData.js"
+import React, { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
+import ProjectCard from "../../components/ProjectCard/ProjectCard.jsx";
+import "./AllProjects.sass";
+import { projectsData } from "../../mock/ProjectsData.js";
 
 function AllProjects() {
     useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className="all-projects">
@@ -19,19 +19,9 @@ function AllProjects() {
                 {projectsData.map((project) => {
                     const {
                         id,
-                        overviewData: {
-                            name,
-                            status,
-                            location,
-                            newInsights,
-                            lastUpdated,
-                        },
-                        healthMetricsData: {
-                            waterNeeds,
-                            frostRisk,
-                            soilHealth,
-                        },
-                    } = project
+                        overviewData: { name, status, location, newInsights, lastUpdated },
+                        healthMetricsData: { waterNeeds, frostRisk, soilHealth },
+                    } = project;
 
                     return (
                         <ProjectCard
@@ -46,11 +36,11 @@ function AllProjects() {
                             frostRisk={frostRisk}
                             soilHealth={soilHealth}
                         />
-                    )
+                    );
                 })}
             </div>
         </div>
-    )
+    );
 }
 
-export default AllProjects
+export default AllProjects;

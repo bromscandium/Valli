@@ -1,19 +1,24 @@
-import {BrowserRouter as Router, Routes, Route, useLocation} from "react-router-dom"
-import {AnimatePresence} from "framer-motion"
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    useLocation,
+} from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
-import Login from "./pages/Login/Login.jsx"
-import Home from "./pages/Home/Home.jsx"
-import AllProjects from "./pages/AllProjects/AllProjects.jsx"
-import Project from "./pages/Project/Project.jsx"
-import Profile from "./pages/Profile/Profile.jsx"
-import Community from "./pages/Community/Community.jsx"
-import Chat from "./pages/Chat/Chat"
-import PageWrapper from "./components/PageWrapper"
+import Login from "./pages/Login/Login.jsx";
+import Home from "./pages/Home/Home.jsx";
+import AllProjects from "./pages/AllProjects/AllProjects.jsx";
+import Project from "./pages/Project/Project.jsx";
+import Profile from "./pages/Profile/Profile.jsx";
+import Community from "./pages/Community/Community.jsx";
+import Chat from "./pages/Chat/Chat";
+import PageWrapper from "./components/PageWrapper";
 import Header from "./components/Header/Header.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 
 function AnimatedRoutes() {
-    const location = useLocation()
+    const location = useLocation();
 
     return (
         <AnimatePresence mode="wait">
@@ -22,11 +27,11 @@ function AnimatedRoutes() {
                     path="/"
                     element={
                         <>
-                            <Header/>
+                            <Header />
                             <PageWrapper>
-                                <Home/>
+                                <Home />
                             </PageWrapper>
-                            <Footer/>
+                            <Footer />
                         </>
                     }
                 />
@@ -34,9 +39,9 @@ function AnimatedRoutes() {
                     path="/login"
                     element={
                         <>
-                            <Header/>
+                            <Header />
                             <PageWrapper>
-                                <Login/>
+                                <Login />
                             </PageWrapper>
                         </>
                     }
@@ -45,11 +50,11 @@ function AnimatedRoutes() {
                     path="/projects"
                     element={
                         <>
-                            <Header/>
+                            <Header />
                             <PageWrapper>
-                                <AllProjects/>
+                                <AllProjects />
                             </PageWrapper>
-                            <Footer/>
+                            <Footer />
                         </>
                     }
                 />
@@ -57,11 +62,11 @@ function AnimatedRoutes() {
                     path="/projects/:id"
                     element={
                         <>
-                            <Header/>
+                            <Header />
                             <PageWrapper>
-                                <Project/>
+                                <Project />
                             </PageWrapper>
-                            <Footer/>
+                            <Footer />
                         </>
                     }
                 />
@@ -69,11 +74,11 @@ function AnimatedRoutes() {
                     path="/profile"
                     element={
                         <>
-                            <Header/>
+                            <Header />
                             <PageWrapper>
-                                <Profile/>
+                                <Profile />
                             </PageWrapper>
-                            <Footer/>
+                            <Footer />
                         </>
                     }
                 />
@@ -81,11 +86,11 @@ function AnimatedRoutes() {
                     path="/community"
                     element={
                         <>
-                            <Header/>
+                            <Header />
                             <PageWrapper>
-                                <Community/>
+                                <Community />
                             </PageWrapper>
-                            <Footer/>
+                            <Footer />
                         </>
                     }
                 />
@@ -93,25 +98,25 @@ function AnimatedRoutes() {
                     path="/chat"
                     element={
                         <>
-                            <Header/>
+                            <Header />
                             <PageWrapper>
-                                <Chat/>
+                                <Chat />
                             </PageWrapper>
-                            <Footer/>
+                            <Footer />
                         </>
                     }
                 />
             </Routes>
         </AnimatePresence>
-    )
+    );
 }
 
 function App() {
     return (
         <Router>
-            <AnimatedRoutes/>
+            <AnimatedRoutes />
         </Router>
-    )
+    );
 }
 
-export default App
+export default App;

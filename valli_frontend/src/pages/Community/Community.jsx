@@ -1,6 +1,6 @@
-import React from "react"
-import {Helmet} from "react-helmet-async"
-import "./Community.sass"
+import React from "react";
+import { Helmet } from "react-helmet-async";
+import "./Community.sass";
 
 function Community() {
     return (
@@ -13,7 +13,7 @@ function Community() {
                 <h1 className="community-title">Soon...</h1>
             </div>
         </div>
-    )
+    );
 }
 
-export default Community
+export default Community;

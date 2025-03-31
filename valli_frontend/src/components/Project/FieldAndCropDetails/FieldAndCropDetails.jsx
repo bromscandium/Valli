@@ -1,8 +1,8 @@
-import React from "react"
-import "./FieldAndCropDetails.sass"
+import React from "react";
+import "./FieldAndCropDetails.sass";
 
-const FieldAndCropDetails = ({data}) => {
-    const {size, stage, irrigationMethod} = data
+const FieldAndCropDetails = ({ data }) => {
+    const { size, stage, irrigationMethod } = data;
 
     return (
         <section className="project-details">
@@ -12,13 +12,11 @@ const FieldAndCropDetails = ({data}) => {
                 <div className="detail-item">
                     <span className="value">{size}</span>
                     <span className="label">Acres</span>
-
                 </div>
 
                 <div className="detail-item">
                     <span className="value">{stage}</span>
                     <span className="label">Crop Stage</span>
-
                 </div>
 
                 <div className="detail-item">
@@ -27,7 +25,7 @@ const FieldAndCropDetails = ({data}) => {
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};
 
-export default FieldAndCropDetails
+export default FieldAndCropDetails;

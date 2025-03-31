@@ -1,14 +1,14 @@
-import React, {useState} from "react"
-import {Helmet} from "react-helmet-async"
-import "./Login.sass"
+import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import "./Login.sass";
 
 function Login() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleLogin = () => {
-        alert(`Email: ${email}\nPassword: ${password}`)
-    }
+        alert(`Email: ${email}\nPassword: ${password}`);
+    };
 
     return (
         <div>
@@ -38,7 +38,7 @@ function Login() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default Login
+export default Login;

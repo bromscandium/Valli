@@ -1,17 +1,16 @@
-import React, {useEffect} from "react"
-import {Helmet} from "react-helmet-async"
-import ProjectCard from "../../components/ProjectCard/ProjectCard.jsx"
-import UserCard from "../../components/UserCard/UserCard.jsx"
-import WeatherInsights from "../../components/WeatherInsights/WeatherInsights.jsx"
-import CommunityUpdates from "../../components/CommunityUpdates/CommunityUpdates.jsx"
-import "./Home.sass"
-import {projectsData} from "../../mock/ProjectsData.js"
-
+import React, { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
+import ProjectCard from "../../components/ProjectCard/ProjectCard.jsx";
+import UserCard from "../../components/UserCard/UserCard.jsx";
+import WeatherInsights from "../../components/WeatherInsights/WeatherInsights.jsx";
+import CommunityUpdates from "../../components/CommunityUpdates/CommunityUpdates.jsx";
+import "./Home.sass";
+import { projectsData } from "../../mock/ProjectsData.js";
 
 function Home() {
     useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className="home">
@@ -19,25 +18,15 @@ function Home() {
                 <title>Valli</title>
             </Helmet>
             <div className="scroll-content">
-                <UserCard/>
+                <UserCard />
 
                 <h4 className="section-title">Your Projects</h4>
                 {projectsData.slice(0, 3).map((project) => {
                     const {
                         id,
-                        overviewData: {
-                            name,
-                            status,
-                            location,
-                            newInsights,
-                            lastUpdated,
-                        },
-                        healthMetricsData: {
-                            waterNeeds,
-                            frostRisk,
-                            soilHealth,
-                        },
-                    } = project
+                        overviewData: { name, status, location, newInsights, lastUpdated },
+                        healthMetricsData: { waterNeeds, frostRisk, soilHealth },
+                    } = project;
 
                     return (
                         <ProjectCard
@@ -52,17 +41,17 @@ function Home() {
                             frostRisk={frostRisk}
                             soilHealth={soilHealth}
                         />
-                    )
+                    );
                 })}
 
                 <h4 className="section-title">Weather Insights</h4>
-                <WeatherInsights/>
+                <WeatherInsights />
 
                 <h4 className="section-title">Community Updates</h4>
-                <CommunityUpdates/>
+                <CommunityUpdates />
             </div>
         </div>
-    )
+    );
 }
 
-export default Home
+export default Home;

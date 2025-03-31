@@ -1,39 +1,55 @@
-import React, {useState} from 'react';
-import {Doughnut, Bar} from 'react-chartjs-2';
-import {Chart, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement} from 'chart.js';
+import React, { useState } from "react";
+import { Doughnut, Bar } from "react-chartjs-2";
+import {
+    Chart,
+    ArcElement,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+} from "chart.js";
 import "./WaterUsage.sass";
 
-Chart.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
+Chart.register(
+    ArcElement,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    BarElement
+);
 
-const WaterUsage = ({data}) => {
+const WaterUsage = ({ data }) => {
     const [activeTab, setActiveTab] = useState("Water Sources");
 
-    const {waterSources, waterUsage} = data;
+    const { waterSources, waterUsage } = data;
 
     const doughnutData = {
         labels: waterSources.labels,
-        datasets: [{
-            data: waterSources.data,
-            backgroundColor: waterSources.colors,
-        }],
+        datasets: [
+            {
+                data: waterSources.data,
+                backgroundColor: waterSources.colors,
+            },
+        ],
     };
 
     const barData = {
-        labels: ['Water Usage'],
+        labels: ["Water Usage"],
         datasets: [
             {
-                label: 'Current Usage',
+                label: "Current Usage",
                 data: [waterUsage.current],
                 backgroundColor: waterUsage.colors.current,
             },
             {
-                label: 'Estimated Usage',
+                label: "Estimated Usage",
                 data: [waterUsage.estimated],
                 backgroundColor: waterUsage.colors.estimated,
             },
         ],
     };
-
 
     return (
         <section className="water-usage-card">
@@ -62,8 +78,8 @@ const WaterUsage = ({data}) => {
                                         display: false,
                                     },
                                     tooltip: {
-                                        bodyFont: {family: 'Poppins'},
-                                        titleFont: {family: 'Poppins'},
+                                        bodyFont: { family: "Poppins" },
+                                        titleFont: { family: "Poppins" },
                                     },
                                 },
                             }}
@@ -72,10 +88,10 @@ const WaterUsage = ({data}) => {
                     <div className="custom-legend">
                         {waterSources.labels.map((label, i) => (
                             <div key={i} className="legend-item">
-                                <span
-                                    className="legend-color"
-                                    style={{backgroundColor: waterSources.colors[i]}}
-                                />
+                <span
+                    className="legend-color"
+                    style={{ backgroundColor: waterSources.colors[i] }}
+                />
                                 <span className="legend-text">{label}:</span>
                                 <span className="info">{waterSources.data[i]}%</span>
                             </div>
@@ -90,25 +106,35 @@ const WaterUsage = ({data}) => {
                         <Bar
                             data={barData}
                             options={{
-                                plugins: {legend: {display: false}},
+                                plugins: { legend: { display: false } },
                                 responsive: true,
                                 scales: {
-                                    x: {display: false},
-                                    y: {display: false},
+                                    x: { display: false },
+                                    y: { display: false },
                                 },
                             }}
                         />
                     </div>
                     <div className="custom-legend">
                         <div className="legend-item">
-                            <span className="legend-color" style={{ backgroundColor: waterUsage.colors.current }} />
+              <span
+                  className="legend-color"
+                  style={{ backgroundColor: waterUsage.colors.current }}
+              />
                             <span className="legend-text">Current Usage:</span>
-                            <span className="info">{waterUsage.current.toLocaleString()} m³</span>
+                            <span className="info">
+                {waterUsage.current.toLocaleString()} m³
+              </span>
                         </div>
                         <div className="legend-item">
-                            <span className="legend-color" style={{ backgroundColor: waterUsage.colors.estimated }} />
+              <span
+                  className="legend-color"
+                  style={{ backgroundColor: waterUsage.colors.estimated }}
+              />
                             <span className="legend-text">Estimated Usage:</span>
-                            <span className="info">{waterUsage.estimated.toLocaleString()} m³</span>
+                            <span className="info">
+                {waterUsage.estimated.toLocaleString()} m³
+              </span>
                         </div>
                     </div>
                 </div>

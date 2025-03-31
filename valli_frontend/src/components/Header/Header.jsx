@@ -1,5 +1,5 @@
-import React from "react"
-import "./Header.sass"
+import React from "react";
+import "./Header.sass";
 
 function Header() {
     return (
@@ -8,7 +8,7 @@ function Header() {
                 <h1 className="logo">Valli</h1>
             </div>
         </header>
-    )
+    );
 }
 
 export default Header;

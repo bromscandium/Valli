@@ -1,15 +1,15 @@
-import React, {useState} from "react"
-import {Doughnut} from "react-chartjs-2"
-import {Chart, ArcElement, Tooltip, Legend} from "chart.js"
-import "./FinancialOverview.sass"
+import React, { useState } from "react";
+import { Doughnut } from "react-chartjs-2";
+import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
+import "./FinancialOverview.sass";
 
-Chart.register(ArcElement, Tooltip, Legend)
+Chart.register(ArcElement, Tooltip, Legend);
 
-const FinancialOverview = ({data}) => {
-    const [activeTab, setActiveTab] = useState("Overview")
+const FinancialOverview = ({ data }) => {
+    const [activeTab, setActiveTab] = useState("Overview");
 
-    if (!data) return null
-    const {transactions, summaryData} = data
+    if (!data) return null;
+    const { transactions, summaryData } = data;
 
     const pieData = {
         labels: summaryData.labels,
@@ -19,7 +19,7 @@ const FinancialOverview = ({data}) => {
                 backgroundColor: summaryData.colors,
             },
         ],
-    }
+    };
 
     return (
         <section className="financial-overview-card">
@@ -42,12 +42,14 @@ const FinancialOverview = ({data}) => {
                     {transactions.map((tx, index) => (
                         <div key={index} className="transaction-item">
                             <div className="transaction-left">
-
                                 <span className="category">{tx.category}</span>
                             </div>
 
                             <div className="amount-block">
-                                <span className="amount">{tx.amount}{tx.unit}</span>
+                <span className="amount">
+                  {tx.amount}
+                    {tx.unit}
+                </span>
                                 {tx.description && (
                                     <small className="description">{tx.description}</small>
                                 )}
@@ -66,16 +68,17 @@ const FinancialOverview = ({data}) => {
                                 plugins: {
                                     legend: {
                                         display: false,
-                                    }, tooltip: {
+                                    },
+                                    tooltip: {
                                         bodyFont: {
-                                            family: 'Poppins',
+                                            family: "Poppins",
                                             size: 14,
                                         },
                                         titleFont: {
-                                            family: 'Poppins',
+                                            family: "Poppins",
                                             size: 14,
                                         },
-                                    }
+                                    },
                                 },
                             }}
                         />
@@ -83,20 +86,24 @@ const FinancialOverview = ({data}) => {
                     <div className="custom-legend">
                         {summaryData.labels.map((label, i) => (
                             <div key={i} className="legend-item">
-                    <span
-                        className="legend-color"
-                        style={{backgroundColor: summaryData.colors[i]}}
-                    />
+                <span
+                    className="legend-color"
+                    style={{ backgroundColor: summaryData.colors[i] }}
+                />
                                 <span className="legend-text">
-                        {label}: <span className="info"> ₹{summaryData.data[i].toLocaleString()}</span>
-                    </span>
+                  {label}:{" "}
+                                    <span className="info">
+                    {" "}
+                                        ₹{summaryData.data[i].toLocaleString()}
+                  </span>
+                </span>
                             </div>
                         ))}
                     </div>
                 </div>
             )}
         </section>
-    )
-}
+    );
+};
 
-export default FinancialOverview
+export default FinancialOverview;
