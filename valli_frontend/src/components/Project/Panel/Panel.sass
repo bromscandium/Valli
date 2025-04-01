@@ -1,0 +1,90 @@
+.panel
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 20px 16px
+    background-color: #fff
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+    border-radius: 6px
+    margin-bottom: 16px
+
+.back-btn, .share-btn
+    background-color: transparent
+    border: none
+    cursor: pointer
+    font-size: 24px
+    display: flex
+    align-items: center
+
+.back-btn
+    color: #fff
+    background: #fa7202
+    border: 1px #bebebe solid
+    padding: 6px 24px
+    border-radius: 6px
+    font-weight: 600
+    cursor: pointer
+    transition: background 0.3s ease
+
+.back-btn:hover
+    background: #da0967
+
+.actions
+    display: flex
+    gap: 16px
+    align-items: center
+
+.share-btn img
+    width: 32px
+    height: 32px
+    margin-left: 8px
+
+.privacy-toggle
+    display: flex
+    align-items: center
+    background: #eee
+    border-radius: 20px
+    padding: 9px 14px
+    border: 1px #bebebe solid
+    cursor: pointer
+    position: relative
+    width: 130px
+    height: 50px
+
+.privacy-text
+    font-size: 20px
+    transition: transform 0.3s ease
+    position: absolute
+    left: 40%
+    transform: translateX(-50%)
+
+.toggle-circle
+    width: 28px
+    height: 28px
+    background: #fff
+    border-radius: 50%
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2)
+    transition: transform 0.3s ease
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
+
+.privacy-toggle.public .toggle-circle
+    transform: translateX(77px) translateY(-50%)
+
+.privacy-toggle.private .toggle-circle
+    transform: translateX(-3px) translateY(-50%)
+
+.privacy-toggle.public .privacy-text
+    transform: translateX(-40px)
+
+.privacy-toggle.private .privacy-text
+    transform: translateX(0)
+
+.privacy-toggle.public
+    background-color: #4CAF50
+    color: white
+
+.privacy-toggle.private
+    background-color: #ccc
+    color: #000

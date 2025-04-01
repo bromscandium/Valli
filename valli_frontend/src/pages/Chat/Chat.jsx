@@ -1,153 +1,132 @@
-import React, {useState, useRef, useEffect} from "react"
-import Header from "../../components/Header/Header"
-import Footer from "../../components/Footer/Footer"
-import "./Chat.sass"
+import React, { useState, useRef, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
+import "./Chat.sass";
 
-function Chat() {
-    const [input, setInput] = useState("")
-    const [messages, setMessages] = useState([])
-    const wsRef = useRef(null)
-    const mediaRecorderRef = useRef(null)
-    const [isSessionActive, setIsSessionActive] = useState(false)
-    const [isRecording, setIsRecording] = useState(false)
+const Chat = () => {
+    const [input, setInput] = useState("");
+    const [messages, setMessages] = useState([]);
+    const [isSessionActive, setIsSessionActive] = useState(false);
+    const [isRecording, setIsRecording] = useState(false);
+    const wsRef = useRef(null);
+    const mediaRecorderRef = useRef(null);
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
-        const inputBlock = document.querySelector('.chat-input')
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
-        const handleResize = () => {
-            const viewportHeight = window.visualViewport?.height
-            const windowHeight = window.innerHeight
-
-            if (viewportHeight && viewportHeight < windowHeight) {
-                const keyboardHeight = windowHeight - viewportHeight
-                inputBlock.style.bottom = `${keyboardHeight}px`
-            } else {
-                inputBlock.style.bottom = '80px'
-            }
-        }
-
-        window.visualViewport?.addEventListener('resize', handleResize)
-
-        return () => {
-            window.visualViewport?.removeEventListener('resize', handleResize)
-        }
-    }, [])
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const handleSend = () => {
-        if (input.trim() === "") return
-        const time = new Date().toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"})
-        setMessages([...messages, {text: input, sender: "You", time}])
-        setInput("")
-    }
+        if (input.trim() === "") return;
+        const newMessage = {
+            text: input,
+            sender: "You",
+            time: new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+            }),
+        };
+        setMessages([...messages, newMessage]);
+        setInput("");
+    };
 
-    const startSession = () => {
-        wsRef.current = new WebSocket("wss://example.com")
-        wsRef.current.onopen = () => {
-            setIsSessionActive(true)
+    const toggleSession = () => {
+        if (isSessionActive) {
+            wsRef.current?.close();
+            setIsSessionActive(false);
+        } else {
+            wsRef.current = new WebSocket("wss://example.com");
+            wsRef.current.onopen = () => setIsSessionActive(true);
         }
-    }
+    };
 
-    const stopSession = () => {
-        console.log("Session stopped")
-        if (wsRef.current) {
-            wsRef.current.close()
-            setIsSessionActive(false)
+    const toggleRecording = async () => {
+        if (isRecording) {
+            mediaRecorderRef.current?.stop();
+        } else {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const recorder = new MediaRecorder(stream);
+            recorder.ondataavailable = (e) => {
+                if (e.data.size > 0 && wsRef.current?.readyState === WebSocket.OPEN) {
+                    wsRef.current.send(e.data);
+                }
+            };
+            recorder.onstop = () => setIsRecording(false);
+            recorder.start(100);
+            mediaRecorderRef.current = recorder;
+            setIsRecording(true);
         }
-    }
-
-    const startRecording = async () => {
-        const stream = await navigator.mediaDevices.getUserMedia({audio: true})
-        const recorder = new MediaRecorder(stream)
-        mediaRecorderRef.current = recorder
-        recorder.ondataavailable = (event) => {
-            if (event.data.size > 0 && wsRef.current?.readyState === WebSocket.OPEN) {
-                wsRef.current.send(event.data)
-            }
-        }
-        recorder.onstop = () => {
-            setIsRecording(false)
-        }
-        recorder.start(100)
-        setIsRecording(true)
-    }
-
-    const stopRecording = () => {
-        mediaRecorderRef.current?.stop()
-        setIsRecording(false)
-    }
+    };
 
     return (
         <div className="chat-page">
-            <Header/>
-            <div className="chat-body">
+            <Helmet>
+                <title>Valli | Chat</title>
+            </Helmet>
+
+            <div className="chat-container">
                 <div className="chat-messages">
                     {messages.map((msg, i) => (
                         <div
-                            key={i}
                             className={`message ${msg.sender === "You" ? "user" : "bot"}`}
+                            key={i}
                         >
                             <div className="bubble">
-                                <p className="text">{msg.text}</p>
+                                {msg.text}
                                 <div className="meta">
-                                    <span>{msg.time}</span>
+                                    <span>{msg.time} </span>
                                     <span>{msg.sender}</span>
                                 </div>
                             </div>
                         </div>
                     ))}
+                    <div ref={messagesEndRef} />
                 </div>
 
                 <div className="chat-input">
-                    <div className="session-control">
-                        {isSessionActive ? (
-                            <button onClick={stopSession}>
-                                <img src="/pause-session.png" alt="Stop Session"/>
-                            </button>
-                        ) : (
-                            <button onClick={startSession}>
-                                <img src="/start-session.png" alt="Start Session"/>
-                            </button>
-                        )}
-                    </div>
+                    <button className="session-button" onClick={toggleSession}>
+                        {isSessionActive
+                            ? "Stop GPT Session (Dev)"
+                            : "Launch GPT Session (Dev)"}
+                    </button>
+
                     <div className="input-row">
-                        <textarea
-                            className="text-input"
-                            placeholder="Type your message..."
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            rows={1}
-                            onFocus={() => {
-                                setTimeout(() => {
-                                    window.scrollTo(0, document.body.scrollHeight)
-                                }, 300)
-                            }}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                    e.preventDefault()
-                                    handleSend()
-                                }
-                            }}
-                        />
+            <textarea
+                className="text-input"
+                placeholder="Type your message..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                rows={1}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleSend();
+                    }
+                }}
+            />
                         <div className="input-actions">
-                            {isRecording ? (
-                                <button onClick={stopRecording}>
-                                    <img src="/block-microphone.png" alt="Stop Recording"/>
-                                </button>
-                            ) : (
-                                <button onClick={startRecording}>
-                                    <img src="/begin-microphone.png" alt="Start Recording"/>
-                                </button>
-                            )}
+                            <button onClick={toggleRecording}>
+                                <img
+                                    src={
+                                        isRecording
+                                            ? "/block-microphone.png"
+                                            : "/begin-microphone.png"
+                                    }
+                                    alt="Microphone"
+                                />
+                            </button>
                             <button onClick={handleSend}>
-                                <img src="/send.png" alt="Send Message"/>
+                                <img src="/send.png" alt="Send Message" />
                             </button>
                         </div>
                     </div>
                 </div>
-
             </div>
-            <Footer/>
         </div>
-    )
-}
+    );
+};
 
-export default Chat
+export default Chat;

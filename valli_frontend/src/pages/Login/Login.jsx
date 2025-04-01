@@ -1,18 +1,20 @@
-import React, { useState } from "react"
-import Header from "../../components/Header/Header.jsx"
-import "./Login.sass"
+import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import "./Login.sass";
 
 function Login() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleLogin = () => {
-        alert(`Email: ${email}\nPassword: ${password}`)
-    }
+        alert(`Email: ${email}\nPassword: ${password}`);
+    };
 
     return (
         <div>
-            <Header />
+            <Helmet>
+                <title>Valli | Login</title>
+            </Helmet>
             <div className="login-container">
                 <div className="login-card">
                     <h1 className="login-title">Welcome Back</h1>
@@ -36,7 +38,7 @@ function Login() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default Login
+export default Login;
