@@ -123,7 +123,7 @@ def add_extra_data(sample_daily_data):
     }
     return extra_data
 
-def fetch_all_data(longitude, latitude, id=None):
+def fetch_all_data(longitude, latitude, person_id, id=None):
     """
     Fetch data from the short_range_forecast & now_cast_forecast endpoints,
     compute daily-aggregated & extra insights, then either insert or update
@@ -192,6 +192,7 @@ def fetch_all_data(longitude, latitude, id=None):
             )
         else:
             new_id = my_farmer_db.insert_api_data(
+                person_id=person_id,
                 short_range_forecast=short_range_data,
                 now_cast_forecast=now_cast_data,
                 aggregated_data=aggregated_data
@@ -205,13 +206,13 @@ def fetch_all_data(longitude, latitude, id=None):
 
     return aggregated_data, id
 
-def start_scheduler(longitude, latitude, id=None):
+def start_scheduler(longitude, latitude, person_id, id=None):
     """
     Schedules fetch_all_data every hour, but first does an immediate fetch.
     We'll do an infinite loop for demonstration; in production, consider a background thread instead.
     """
-    aggregated_data, new_id = fetch_all_data(longitude, latitude, id)
-    schedule.every(1).hour.do(fetch_all_data, longitude, latitude, new_id)
+    aggregated_data, new_id = fetch_all_data(longitude, latitude, person_id, id)
+    schedule.every(1).hour.do(fetch_all_data, longitude, latitude, person_id, new_id)
     logger.info("Scheduler started with id=%s, longitude=%s, latitude=%s", new_id, longitude, latitude)
 
     while True:

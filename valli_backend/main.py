@@ -3,7 +3,7 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from models import my_farmer_db
 from pydantic import BaseModel
-from tools import logger, call_openai_api, OPENAI_API, predefined_questions, json_summary_plan_schema, summary_prompt, get_coordinates_based_on_location, CREATE_PROJECT_PROMPT, create_project_schema
+from tools import logger, get_weather_data, call_openai_api, OPENAI_API, OpenWeatherApi, predefined_questions, json_summary_plan_schema, summary_prompt, get_coordinates_based_on_location, CREATE_PROJECT_PROMPT, create_project_schema, WEATHER_PROMPT, weather_json_schema, CONVERSATION_PROMPT
 from handle_file import add_to_qdrant, query, delete_document_from_collection, extract_text_from_file
 import asyncio
 from typing import Optional
@@ -19,31 +19,31 @@ import uuid
 app = FastAPI()
 
 class Conversation(BaseModel):
-    person_id: Optional[str] = None
-    conversation_id: Optional[str] = None
+    user_id: str
     message: str
-    context: str
+    conversation_id: Optional[str] = None
 
 class FileItem(BaseModel):
     file_name: str
     file_data: bytes
 
 class ProjectForm(BaseModel):
-    farm_location: str  # "Which city or village is your farm near?"
-    crop: str  # "What crop are you growing this season?"
-    objective: str
-    crop_stage: str  # "What’s the current stage of your crop? Just planted, growing, or close to harvest?"
-    farm_size_acres: float  # "How big is your farm? (Approximate size in acres?)"
-    planting_date: Optional[str] = None  # "When did you plant your crop? (If you remember the exact date, that’s great!)"
-    irrigation_method: str  # "What irrigation method are you using? (Canal, tube well, drip irrigation, or a mix?)"
-    crop_purpose: str  # "What’s the main purpose of your crop? For personal use or selling?"
-    selling_method: str  # "How do you plan to sell it? Directly to customers, through markets, brokers, or cooperatives?"
-    expected_yield_per_acre: Optional[float] = None  # "What’s your expected yield per acre? (Rough estimate is fine!)"
-    expected_price_per_kg: Optional[float] = None  # "What price per kg do you expect to sell it for?"
-    typical_costs_per_acre: Optional[float] = None  # "Can you estimate your typical costs per acre? (Including seeds, fertilizers, pesticides, and biological products.)"
-    irrigation_costs_per_season_per_acre: Optional[float] = None  # "What are your irrigation costs per season, per acre? (Including labor, electricity, and equipment maintenance.)"
-    labor_or_machinery: str  # "Do you hire extra labor, or do you use machinery?"
-    labor_machinery_costs_per_season_per_acre: Optional[float] = None  # "How much do labor and machinery cost per season, per acre?"
+    person_id: str
+    farm_location: Optional[str] = None  # Accepts any format
+    crop: Optional[str] = None  # Accepts any format
+    objective: Optional[str] = None  # Accepts any format
+    crop_stage: Optional[str] = None  # Accepts any format
+    farm_size_acres: Optional[float] = None  # Accepts any format
+    planting_date: Optional[str] = None  # Accepts any format
+    irrigation_method: Optional[str] = None  # Accepts any format
+    crop_purpose: Optional[str] = None  # Accepts any format
+    selling_method: Optional[str] = None  # Accepts any format
+    expected_yield_per_acre: Optional[float] = None  # Accepts any format
+    expected_price_per_kg: Optional[float] = None  # Accepts any format
+    typical_costs_per_acre: Optional[float] = None  # Accepts any format
+    irrigation_costs_per_season_per_acre: Optional[float] = None  # Accepts any format
+    labor_or_machinery: Optional[str] = None  # Accepts any format
+    labor_machinery_costs_per_season_per_acre: Optional[float] = None  # Accepts any format
 
 
 class CommunityPost(BaseModel):
@@ -63,67 +63,125 @@ class Project(BaseModel):
     insightsData: dict
 
 class Profile(BaseModel):
+    email: str
+    password: str
     name: str
-    rank: str
     location: str
-    image: str
-    conversations : list[Conversation]
-    projects: list[Project]
+    # location: str
+    # image: str
+    # conversations : list[Conversation]
+    # projects: list[Project]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],  
+    allow_origins=["*"],  # Or restrict to your frontend URL
     allow_credentials=True,
-    allow_headers=["*"],  
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
+@app.post('/register_or_login')
+async def register(item: Profile):
+    email = item.email
+    password = item.password
+    name = item.name
+    location = item.location
+    # location = item.location
+    # image = item.image
+
+    # Check if the user already exists
+    user = my_farmer_db.get_user_by_email(email)
+    if user:
+        # User exists, check password
+        if user['password'] != password:
+            raise HTTPException(status_code=400, detail="Incorrect password")
+        return {"message": "Login successful", "user_id": user['id']}
+    else:
+        # User does not exist, create a new user
+        new_user_id = my_farmer_db.register_user(email=email, password=password, name=name, location=location)
+        return {"message": "Registration successful", "user_id": new_user_id}
+
+@app.get("/get_user_profile")
+async def get_user_profile(user_id: str):
+    user = my_farmer_db.get_user_by_id(user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"user": user}
+
+@app.get("/get_weather_data")
+async def get_weather_insights(user_id: str):
+
+    user = my_farmer_db.get_user_by_id(user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    location = user.get("location")
+    if location is None:
+        raise HTTPException(status_code=400, detail="Location not found for user")
+    # Call the weather API to get the weather data
+    logger.info("Fetching weather data for location: %s", location)
+
+    weather = get_weather_data(location, OpenWeatherApi)
+
+    final_prompt = WEATHER_PROMPT.format(weather=weather)
+
+    conversation = [{"role": "system", "content": final_prompt},]   
+
+    updated_weather_data = await call_openai_api(conversation, json_schema=weather_json_schema)
+    try:
+        # Parse the JSON response into a Python dictionary.
+        parsed_response = json.loads(updated_weather_data)
+    except json.JSONDecodeError as e:
+        raise HTTPException(status_code=400, detail="Invalid JSON response from OpenAI API")
+    
+    return parsed_response
+
 @app.post("/get_openai_answer")
 async def get_openai_answer(item: Conversation):
-    conversation_id = item.conversation_id
     message = item.message
-    collection_name = item.person_id
-    context = item.context
+    user_id = item.user_id
+    conversation_id = item.conversation_id
 
-    logger.info("Received conversation_id: %s, message: %s", conversation_id, message)
+    # get api data
+    context = {}
+    conversation = []  # 👈 Ensure it's always defined
 
     if conversation_id:
-        try:
-            conversation_id = uuid.UUID(conversation_id)  # Ensure it's a valid UUID
-        except ValueError:
-            raise HTTPException(status_code=400, detail="Invalid conversation_id format. Expected a UUID.")
+        db_conversation = my_farmer_db.get_chat_conversation_by_id(conversation_id)
+        if db_conversation is None:
+            projects = my_farmer_db.get_projects_by_person_id(user_id)
+            api_data = my_farmer_db.get_api_data_by_person_id(user_id)
 
-        db_row = my_farmer_db.get_chat_conversation_by_id(id=conversation_id)
-        
-        if db_row is None:
-            # If no conversation is found with the provided ID, create a new conversation.
-            conversation = [
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": message}
-            ]
+            if projects:
+                context['projects'] = projects
+
+            final_prompt = CONVERSATION_PROMPT.format(
+                projects=projects,
+                api_data=api_data,
+            )
+
+            conversation = [{"role": "system", "content": final_prompt}]
         else:
-            # Extract the conversation list from the returned dictionary.
-            conversation = db_row.get("conversation", [])
-            conversation.append({"role": "user", "content": message})
-    else:
-        # No conversation_id provided; create a new conversation.
-        conversation = [
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": message}
-        ]
-        conversation_id = None
+            logger.info("Conversation found in DB: %s", db_conversation)
+            conversation = db_conversation['conversation']
+        # 👇 Handle new conversation case explicitly
+        projects = my_farmer_db.get_projects_by_person_id(user_id)
+        api_data = my_farmer_db.get_api_data_by_person_id(user_id)
 
-    if collection_name:
-    # Add context and call OpenAI API.
-        context = await query(message, collection_name=collection_name)
-        conversation.append({"role": "system", "content": f'Use the following context: {context}'})
-    else:
-        context = None
+        if projects:
+            context['projects'] = projects
 
+        final_prompt = CONVERSATION_PROMPT.format(
+            projects=projects,
+            api_data=api_data,
+        )
+
+        conversation = [{"role": "system", "content": final_prompt}]
+
+    conversation.append({"role": "user", "content": message})
     openai_response = await call_openai_api(conversation)
     conversation.append({"role": "assistant", "content": openai_response})
-    
+
     # Update or insert the conversation into the DB.
     if conversation_id:
         my_farmer_db.update_chat_conversation(conversation_id, conversation)
@@ -134,7 +192,6 @@ async def get_openai_answer(item: Conversation):
         "message": "Response generated successfully",
         "answer": openai_response,
         "conversation_id": conversation_id,
-        'context': context
     }
 
 
@@ -266,12 +323,14 @@ async def get_questions():
 
 
 @app.post("/add_new_project")
-async def add_new_project(item: ProjectForm, person_id: str = None):
+async def add_new_project(item: ProjectForm):
 
     latitude, longitude = await get_coordinates_based_on_location(item.farm_location)
 
+    person_id = item.person_id
+
     # get api data
-    gen = start_scheduler(longitude=longitude, latitude=latitude)
+    gen = start_scheduler(longitude=longitude, latitude=latitude, person_id=person_id)
     api_data_id = next(gen) 
 
     # Extract data from the request
@@ -341,6 +400,7 @@ async def add_new_project(item: ProjectForm, person_id: str = None):
         healthMetricsData=parsed_response.get("healthMetricsData"),
         waterData=parsed_response.get("waterData"),
         recommendationData=parsed_response.get("recommendationData"),
+        financialData=parsed_response.get("financialOverview"),
         insightsData=parsed_response.get("insightsData")
     )
 
@@ -350,6 +410,13 @@ async def add_new_project(item: ProjectForm, person_id: str = None):
 async def get_projects(person_id: str):
     projects = my_farmer_db.get_projects_by_person_id(person_id)
     return {"projects": projects}
+
+@app.get("/get_project_by_id")
+async def get_project_by_id(project_id: str):
+    project = my_farmer_db.get_project_by_id(project_id)
+    if project is None:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return {"project": project}
 
 async def _send_session_update(openai_ws: WebSocketClientProtocol) -> None:
     """Send the session update to the OpenAI WebSocket."""

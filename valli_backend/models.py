@@ -49,6 +49,8 @@ class farmer_db:
                     CREATE TABLE IF NOT EXISTS public.users (
                         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                         "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        "email" TEXT UNIQUE,
+                        "password" TEXT,
                         "name" TEXT,
                         "rank" TEXT,
                         "location" TEXT,
@@ -70,12 +72,10 @@ class farmer_db:
                 cursor.execute('''
                 CREATE TABLE IF NOT EXISTS public.api_data (
                     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    person_id UUID,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
                     short_range_forecast JSONB NOT NULL,
-
                     now_cast_forecast JSONB,
-
                     aggregated_data JSONB
                 );
 
@@ -105,6 +105,7 @@ class farmer_db:
                         project_details_data JSONB,
                         health_metrics_data JSONB,
                         water_data JSONB,
+                        financial_data JSONB,
                         recommendation_data JSONB,
                         insights_data JSONB
                     );
@@ -122,6 +123,44 @@ class farmer_db:
                 cursor.execute("SELECT * FROM public.users")
                 rows = cursor.fetchall()
                 return [dict(row) for row in rows]
+        except Exception as e:
+            self.conn.rollback()
+            raise e
+
+    def get_user_by_email(self, email):
+        try:
+            with self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                cursor.execute("SELECT * FROM public.users WHERE email = %s", (email,))
+                row = cursor.fetchone()
+                return dict(row) if row else None
+        except Exception as e:
+            self.conn.rollback()
+            raise e
+    
+    def get_user_by_id(self, user_id):
+        try:
+            with self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                cursor.execute("SELECT * FROM public.users WHERE id = %s", (user_id,))
+                row = cursor.fetchone()
+                return dict(row) if row else None
+        except Exception as e:
+            self.conn.rollback()
+            raise e
+    
+    def register_user(self, email, password, name, location):
+        """
+        Register a new user with email and password.
+        """
+        try:
+            with self.conn.cursor() as cursor:
+                cursor.execute('''
+                    INSERT INTO public.users ("email", "password", "name", "rank", "location")
+                    VALUES (%s, %s, %s, %s, %s)
+                    RETURNING id;
+                ''', (email, password, name, "user", location))
+                new_id = cursor.fetchone()[0]
+            self.conn.commit()
+            return new_id
         except Exception as e:
             self.conn.rollback()
             raise e
@@ -315,6 +354,7 @@ class farmer_db:
     # ------------- API_DATA CRUD ------------- #
     def insert_api_data(
         self,
+        person_id,                  # optional
         short_range_forecast,           # required
         now_cast_forecast=None,         # optional
         aggregated_data=None            # optional, holds e.g. growth_efficiency, frost_risk, etc.
@@ -330,13 +370,15 @@ class farmer_db:
                 cursor.execute('''
                     INSERT INTO public.api_data (
                         short_range_forecast,
+                        person_id,
                         now_cast_forecast,
                         aggregated_data
                     )
-                    VALUES (%s, %s, %s)
+                    VALUES (%s, %s, %s, %s)
                     RETURNING id;
                 ''', (
                     psycopg2.extras.Json(short_range_forecast),
+                    person_id,
                     psycopg2.extras.Json(now_cast_forecast) if now_cast_forecast else None,
                     psycopg2.extras.Json(aggregated_data) if aggregated_data else None
                 ))
@@ -359,6 +401,16 @@ class farmer_db:
         except Exception as e:
             self.conn.rollback()
             raise e
+        
+    def get_api_data_by_person_id(self, person_id):
+        try:
+            with self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                cursor.execute("SELECT * FROM public.api_data WHERE person_id = %s", (person_id,))
+                rows = cursor.fetchall()
+                return [dict(row) for row in rows]
+        except Exception as e:
+            self.conn.rollback()
+            raise e
 
     def get_api_data_by_id(self, data_id):
         try:
@@ -373,6 +425,7 @@ class farmer_db:
     def update_api_data(
         self,
         data_id,
+        person_id=None,
         short_range_forecast=None,
         now_cast_forecast=None,
         aggregated_data=None
@@ -399,6 +452,11 @@ class farmer_db:
             if aggregated_data is not None:
                 updates.append("aggregated_data = %s")
                 params.append(psycopg2.extras.Json(aggregated_data))
+            
+            if person_id is not None:
+                updates.append("person_id = %s")
+                params.append(person_id)
+            # If no updates were provided, we can skip the update
 
             if not updates:
                 # No updates to make
@@ -428,7 +486,7 @@ class farmer_db:
             raise e
     
     # ------------- PROJECTS CRUD ------------- #
-    def insert_project(self, person_id, overviewData, projectDetailsData, healthMetricsData, waterData, recommendationData, insightsData):
+    def insert_project(self, person_id, overviewData, projectDetailsData, healthMetricsData, waterData, recommendationData, insightsData, financialData):
         try:
             with self.conn.cursor() as cursor:
                 cursor.execute('''
@@ -438,12 +496,23 @@ class farmer_db:
                         project_details_data,
                         health_metrics_data,
                         water_data,
+                        financial_data,
                         recommendation_data,
                         insights_data
                     ) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;
-                ''', (person_id, psycopg2.extras.Json(overviewData), psycopg2.extras.Json(projectDetailsData), psycopg2.extras.Json(healthMetricsData), psycopg2.extras.Json(waterData), psycopg2.extras.Json(recommendationData), psycopg2.extras.Json(insightsData)))
+                ''', (
+                    person_id,
+                    psycopg2.extras.Json(overviewData),
+                    psycopg2.extras.Json(projectDetailsData),
+                    psycopg2.extras.Json(healthMetricsData),
+                    psycopg2.extras.Json(waterData),
+                    psycopg2.extras.Json(financialData),
+                    psycopg2.extras.Json(recommendationData),
+                    psycopg2.extras.Json(insightsData)
+                ))
+                # Fetch the new ID
                 new_id = cursor.fetchone()[0]
             self.conn.commit()
             return new_id
@@ -471,14 +540,14 @@ class farmer_db:
             self.conn.rollback()
             raise e
 
-    def update_project(self, project_id, person_id, overviewData, projectDetailsData, healthMetricsData, waterData, recommendationData, insightsData):
+    def update_project(self, project_id, person_id, overviewData, projectDetailsData, healthMetricsData, waterData, recommendationData, financialData, insightsData):
         try:
             with self.conn.cursor() as cursor:
                 cursor.execute('''
                     UPDATE public.projects
-                    SET person_id = %s, overview_data = %s, project_details_data = %s, health_metrics_data = %s, water_data = %s, recommendation_data = %s, insights_data = %s
+                    SET person_id = %s, overview_data = %s, project_details_data = %s, health_metrics_data = %s, water_data = %s, recommendation_data = %s, insights_data = %s, financial_data = %s
                     WHERE id = %s
-                ''', (person_id, psycopg2.extras.Json(overviewData), psycopg2.extras.Json(projectDetailsData), psycopg2.extras.Json(healthMetricsData), psycopg2.extras.Json(waterData), psycopg2.extras.Json(recommendationData), psycopg2.extras.Json(insightsData), project_id))
+                ''', (person_id, psycopg2.extras.Json(overviewData), psycopg2.extras.Json(projectDetailsData), psycopg2.extras.Json(healthMetricsData), psycopg2.extras.Json(waterData), psycopg2.extras.Json(recommendationData), psycopg2.extras.Json(insightsData), psycopg2.extras.Json(financialData), project_id))
             self.conn.commit()
         except Exception as e:
             self.conn.rollback()

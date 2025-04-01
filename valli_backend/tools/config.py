@@ -7,8 +7,79 @@ load_dotenv()
 OPENAI_API = os.getenv("OPENAI_API_KEY")
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+OpenWeatherApi = os.getenv("OpenWeatherAPI")
 
 QDRANT_CLIENT_HOST = os.getenv("QDRANT_CLIENT_HOST")
+
+CONVERSATION_PROMPT = """
+You are a helpful assistant. You have the following data about the farming projects of the user:
+{projects}
+and other data such as:
+{api_data}
+
+you need to help the user with their queries.
+""" 
+
+WEATHER_PROMPT = """
+You are a helpful assistant. You have the following data about the weather:
+{weather}
+you need to analyze it and provide a summary of the weather conditions strictly adhering to the provided JSON schema. Mind that this data is gonna be used for farmers so when asked for insights for this weather, mind this.
+"""
+
+weather_json_schema = {
+    "type": "json_schema",
+    "json_schema": {
+        "name": "WeatherData",
+        "schema": {
+  "type": "object",
+  "properties": {
+    "temp": {
+      "type": "string",
+      "description": "Current temperature with °C, e.g., '29°C'"
+    },
+    "feelsLike": {
+      "type": "string",
+      "description": "Feels like temperature with °C, e.g., '31°C'"
+    },
+    "high": {
+      "type": "string",
+      "description": "High temperature with °C, e.g., '32°C'"
+    },
+    "low": {
+      "type": "string",
+      "description": "Low temperature with °C, e.g., '24°C'"
+    },
+    "humidity": {
+      "type": "string",
+      "description": "Humidity with percentage, e.g., '65%'"
+    },
+    "condition": {
+      "type": "string",
+      "description": "Text description of weather, e.g., 'Partly Cloudy'"
+    },
+    "rain": {
+      "type": "string",
+      "description": "Chance of rain or rainfall volume, e.g., '10%' or '1 mm'"
+    },
+    "tip": {
+      "type": "string",
+      "description": "A relevant tip based on the weather, e.g., for farming or general advice"
+    }
+  },
+  "required": [
+    "temp",
+    "feelsLike",
+    "high",
+    "low",
+    "humidity",
+    "condition",
+    "rain",
+    "tip"
+  ]
+}
+        }
+    }
+
 
 
 GEMINI_PROMPT : str = """
@@ -207,11 +278,10 @@ API Data:
 - now_cast_forecast: {now_cast_forecast}
 - daily_aggregated_data: {aggregated_data}
 
-Please analyze all the provided data and produce an **output** that follows provided JSON structure.
+Please analyze all the provided data and produce an output that follows provided JSON structure. Always ensure that all the fields of the output are filled. Assume something if the data is not available.
 
 
 '''
-
 
 create_project_schema = {
     "type": "json_schema",
@@ -416,6 +486,63 @@ create_project_schema = {
                         }
                     }
                 },
+                "financialOverview": {
+                    "type": "object",
+                    "description": "Financial overview including transactions and summary data.",
+                    "properties": {
+                        "transactions": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "category": {
+                                        "type": "string",
+                                        "description": "Category of financial metric (e.g., '📈 Estimated Profit')."
+                                    },
+                                    "amount": {
+                                        "oneOf": [
+                                            { "type": "number" },
+                                            { "type": "string" }
+                                        ],
+                                        "description": "Financial amount or trend (e.g., 18000 or 'Up 4%')."
+                                    },
+                                    "unit": {
+                                        "type": "string",
+                                        "description": "Unit of the financial value (e.g., '₹', 'kg')."
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Description of the metric (e.g., 'per acre')."
+                                    }
+                                },
+                                "required": ["category", "amount", "unit", "description"]
+                            }
+                        },
+                        "summaryData": {
+                            "type": "object",
+                            "description": "Summary data for financial aspects.",
+                            "properties": {
+                                "labels": {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "description": "List of labels for financial summary."
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": { "type": "number" },
+                                    "description": "Numerical data corresponding to the labels."
+                                },
+                                "colors": {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "description": "Color codes for each label."
+                                }
+                            },
+                            "required": ["labels", "data", "colors"]
+                        }
+                    },
+                    "required": ["transactions", "summaryData"]
+                },
                 "insightsData": {
                     "type": "object",
                     "description": "Insights regarding environment, business, and protection aspects.",
@@ -456,6 +583,7 @@ create_project_schema = {
         }
     }
 }
+
 
 
 # The JSON schema above defines the expected structure for the final output based on the user's responses.
