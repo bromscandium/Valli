@@ -1,7 +1,7 @@
 import base64
 import aiohttp
 import openai
-from .config import OPENAI_API
+from .config import OPENAI_API, coordinates_schema
 import numpy as np
 from PIL import Image
 # from gemini import gemini_upload_and_chat
@@ -116,3 +116,27 @@ async def get_openai_embeddings(
     )
   
     return np.array([dp.embedding for dp in response.data])
+
+
+async def get_coordinates_based_on_location(location:str):
+    """
+    Get coordinates based on the provided location using OpenAI API.
+    """
+    openai.api_key = OPENAI_API
+    conversation = [
+        {
+            "role": "user",
+            "content": f"Get the coordinates of {location} in the format 'latitude, longitude'."
+        }
+    ]
+    
+    response = await call_openai_api(conversation, json_schema=coordinates_schema)
+    response_dict = json.loads(response)
+    try:
+        latitude = response_dict["latitude"]
+        longitude = response_dict["longitude"]
+        
+        return latitude, longitude
+    except ValueError:
+        logger.error("Invalid response format from OpenAI API: %s", response)
+        return None

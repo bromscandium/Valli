@@ -3,12 +3,13 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from models import my_farmer_db
 from pydantic import BaseModel
-from tools import logger, call_openai_api, OPENAI_API, predefined_questions, json_summary_plan_schema, summary_prompt
+from tools import logger, call_openai_api, OPENAI_API, predefined_questions, json_summary_plan_schema, summary_prompt, get_coordinates_based_on_location, CREATE_PROJECT_PROMPT, create_project_schema
 from handle_file import add_to_qdrant, query, delete_document_from_collection, extract_text_from_file
 import asyncio
 from typing import Optional
 import base64
 import json
+from api_calls import start_scheduler
 import struct
 import soundfile as sf
 from websockets import WebSocketClientProtocol
@@ -27,13 +28,47 @@ class FileItem(BaseModel):
     file_name: str
     file_data: bytes
 
+class ProjectForm(BaseModel):
+    farm_location: str  # "Which city or village is your farm near?"
+    crop: str  # "What crop are you growing this season?"
+    objective: str
+    crop_stage: str  # "What’s the current stage of your crop? Just planted, growing, or close to harvest?"
+    farm_size_acres: float  # "How big is your farm? (Approximate size in acres?)"
+    planting_date: Optional[str] = None  # "When did you plant your crop? (If you remember the exact date, that’s great!)"
+    irrigation_method: str  # "What irrigation method are you using? (Canal, tube well, drip irrigation, or a mix?)"
+    crop_purpose: str  # "What’s the main purpose of your crop? For personal use or selling?"
+    selling_method: str  # "How do you plan to sell it? Directly to customers, through markets, brokers, or cooperatives?"
+    expected_yield_per_acre: Optional[float] = None  # "What’s your expected yield per acre? (Rough estimate is fine!)"
+    expected_price_per_kg: Optional[float] = None  # "What price per kg do you expect to sell it for?"
+    typical_costs_per_acre: Optional[float] = None  # "Can you estimate your typical costs per acre? (Including seeds, fertilizers, pesticides, and biological products.)"
+    irrigation_costs_per_season_per_acre: Optional[float] = None  # "What are your irrigation costs per season, per acre? (Including labor, electricity, and equipment maintenance.)"
+    labor_or_machinery: str  # "Do you hire extra labor, or do you use machinery?"
+    labor_machinery_costs_per_season_per_acre: Optional[float] = None  # "How much do labor and machinery cost per season, per acre?"
+
+
 class CommunityPost(BaseModel):
     title: str
     content: str
     image_data: bytes
-    number_of_likes: int = 0
-    number_of_comments: int = 0
+    number_of_likes: Optional[int] = 0
+    number_of_comments: Optional[int] = 0
 
+class Project(BaseModel):
+    id: int
+    overviewData: dict
+    projectDetailsData: dict
+    healthMetricsData: dict
+    waterData: dict
+    recommendationData: dict
+    insightsData: dict
+
+class Profile(BaseModel):
+    name: str
+    rank: str
+    location: str
+    image: str
+    conversations : list[Conversation]
+    projects: list[Project]
 
 app.add_middleware(
     CORSMiddleware,
@@ -42,7 +77,6 @@ app.add_middleware(
     allow_credentials=True,
     allow_headers=["*"],  
 )
-
 
 
 @app.post("/get_openai_answer")
@@ -109,8 +143,8 @@ async def add_to_community(item: CommunityPost):
     title = item.title
     content = item.content
     image_data = item.image_data
-    number_of_likes = item.number_of_likes
-    number_of_comments = item.number_of_comments
+    # number_of_likes = item.number_of_likes
+    # number_of_comments = item.number_of_comments
 
     # Save the image to disk
     image_path = f"images/{title}.jpg"
@@ -118,7 +152,7 @@ async def add_to_community(item: CommunityPost):
         f.write(image_data)
 
     # Insert the post into the database
-    my_farmer_db.insert_community(title, content, image_path, number_of_likes, number_of_comments)
+    my_farmer_db.insert_community(title, content, image_path)
     return {"message": "Post added successfully"}
 
 @app.get("/get_community_posts")
@@ -133,7 +167,7 @@ async def get_ai_insights(person_id: str):
     insights = call_openai_api(conversation, json_schema=insights_json_schema)
     return {"insights": insights}
 
-@app.post("/add_data")
+@app.post("/add_file")
 async def add_data(
     file: UploadFile = File(...),
     file_name: str = Form(...),
@@ -154,14 +188,12 @@ async def add_data(
     result = add_to_qdrant(text=file_text, source=file_name, collection_name=collection_name)
     return {"message": "Data added successfully"}
 
-@app.post("/delete_data")
+@app.post("/delete_file")
 async def delete_data(item: FileItem):
     file_name = item.file_name
     result = delete_document_from_collection("text_collection", file_name)
     # result = farmer_db.
     return {"message": "Data deleted successfully"}
-
-
 
 @app.post('/personalized_plan')
 async def personalized_plan():
@@ -227,6 +259,97 @@ async def personalized_plan():
     )
     
     return {"id": new_id, "data": parsed_response}
+
+@app.get("/get_questions")
+async def get_questions():
+    return {"questions": predefined_questions}
+
+
+@app.post("/add_new_project")
+async def add_new_project(item: ProjectForm, person_id: str = None):
+
+    latitude, longitude = await get_coordinates_based_on_location(item.farm_location)
+
+    # get api data
+    gen = start_scheduler(longitude=longitude, latitude=latitude)
+    api_data_id = next(gen) 
+
+    # Extract data from the request
+    farm_location = item.farm_location
+    objective = item.objective
+    crop = item.crop
+    crop_stage = item.crop_stage
+    farm_size_acres = item.farm_size_acres
+    planting_date = item.planting_date
+    irrigation_method = item.irrigation_method
+    crop_purpose = item.crop_purpose
+    selling_method = item.selling_method
+    expected_yield_per_acre = item.expected_yield_per_acre
+    expected_price_per_kg = item.expected_price_per_kg
+    typical_costs_per_acre = item.typical_costs_per_acre
+    irrigation_costs_per_season_per_acre = item.irrigation_costs_per_season_per_acre
+    labor_or_machinery = item.labor_or_machinery
+    labor_machinery_costs_per_season_per_acre = item.labor_machinery_costs_per_season_per_acre
+
+    # GET api data
+    api_data = my_farmer_db.get_api_data_by_id(api_data_id)
+    if api_data is None:
+        raise HTTPException(status_code=404, detail="API data not found")
+    else:
+        short_range_forecast = api_data.get("short_range_forecast")
+        now_cast_forecast = api_data.get("now_cast_forecast")
+        aggregated_data = api_data.get("aggregated_data")
+
+    # build conversation based on the data
+    final_prompt = CREATE_PROJECT_PROMPT.format(
+        farm_location=farm_location,
+        objective=objective,
+        crop=crop,
+        crop_stage=crop_stage,
+        farm_size_acres=farm_size_acres,
+        planting_date=planting_date,
+        irrigation_method=irrigation_method,
+        crop_purpose=crop_purpose,
+        selling_method=selling_method,
+        expected_yield_per_acre=expected_yield_per_acre,
+        expected_price_per_kg=expected_price_per_kg,
+        typical_costs_per_acre=typical_costs_per_acre,
+        irrigation_costs_per_season_per_acre=irrigation_costs_per_season_per_acre,
+        labor_or_machinery=labor_or_machinery,
+        labor_machinery_costs_per_season_per_acre=labor_machinery_costs_per_season_per_acre,
+
+        short_range_forecast=short_range_forecast,
+        now_cast_forecast=now_cast_forecast,
+        aggregated_data=aggregated_data
+    )
+    conversation = [
+        {"role": "system", "content": final_prompt},
+]   
+    openai_response = await call_openai_api(conversation, json_schema=create_project_schema)
+    try:
+        # Parse the JSON response into a Python dictionary.
+        parsed_response = json.loads(openai_response)
+    except json.JSONDecodeError as e:
+        raise HTTPException(status_code=400, detail="Invalid JSON response from OpenAI API")
+    
+    # add to db
+    # Insert the parsed response into the database
+    new_id = my_farmer_db.insert_project(
+        person_id=person_id,  # Replace with the actual person_id if available
+        overviewData=parsed_response.get("overviewData"),
+        projectDetailsData=parsed_response.get("projectDetailsData"),
+        healthMetricsData=parsed_response.get("healthMetricsData"),
+        waterData=parsed_response.get("waterData"),
+        recommendationData=parsed_response.get("recommendationData"),
+        insightsData=parsed_response.get("insightsData")
+    )
+
+    return {"id": new_id, "data": parsed_response}
+
+@app.get("/get_projects")
+async def get_projects(person_id: str):
+    projects = my_farmer_db.get_projects_by_person_id(person_id)
+    return {"projects": projects}
 
 async def _send_session_update(openai_ws: WebSocketClientProtocol) -> None:
     """Send the session update to the OpenAI WebSocket."""

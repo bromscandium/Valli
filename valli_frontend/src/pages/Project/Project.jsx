@@ -11,8 +11,10 @@ import Insights from "../../components/Project/Insights.jsx"
 import WaterUsage from "../../components/Project/WaterUsage.jsx"
 import ProductRecommendation from "../../components/Project/ProductRecommendation.jsx"
 
-import { projectsData } from "../../mock/ProjectsData.js"
-const project = projectsData[0]
+import { fetchProjects } from "../../mock/ProjectsData.js"
+
+const projects = fetchProjects()
+const project = projects[0] // Assuming you want to display the first project for now
 
 function Project() {
     const [activeInsight, setActiveInsight] = useState("Environment")

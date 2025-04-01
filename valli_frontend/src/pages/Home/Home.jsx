@@ -6,9 +6,10 @@ import UserCard from "../../components/UserCard/UserCard.jsx"
 import WeatherInsights from "../../components/WeatherInsights/WeatherInsights.jsx"
 import CommunityUpdates from "../../components/CommunityUpdates/CommunityUpdates.jsx"
 import "./Home.sass"
-import {projectsData} from "../../mock/ProjectsData.js"
+import {fetchProjects} from "../../mock/ProjectsData.js"
 
 function Home() {
+    const projectsData = fetchProjects()
     return (
         <div className="home">
             <Header/>

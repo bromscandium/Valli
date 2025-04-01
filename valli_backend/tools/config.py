@@ -60,47 +60,6 @@ async def build_conversation(prompt: str, summary_text: str) -> list[dict]:
         {"role": "system", "content": formatted_prompt},
     ]
 
-json_schema = {
-  "type": "json_schema",
-  "json_schema": {
-    "name": "OpenAIOutput",
-    "schema": {
-      "title": "OpenAIOutput",
-      "type": "object",
-      "properties": {
-          "name": {
-          "type": "string",
-          "description": "The name of the person."
-        },
-            'age': {
-            'type': 'string',  
-            'description': 'The age of the person.'
-        },
-        'occupation': {
-            'type': 'string',  
-            'description': 'The current occupation of the person.'
-        },
-        'education': {
-            'type': 'string',  
-            'description': 'The educational qualifications of the person.'
-        },
-        'experience': {
-            'type': 'string',  
-            'description': 'The work experience of the person.'
-        },
-        'skills': {
-            'type': 'string',  
-            'description': 'The skills of the person.'
-        },
-        'aspirations': {
-            'type': 'string',  
-            'description': 'The future aspirations of the person.'
-        }
-      }
-    }
-    }
-}
-
 json_summary_plan_schema = {
     "type": "json_schema",
     "json_schema": {
@@ -173,6 +132,26 @@ json_summary_plan_schema = {
         }
     }
 }
+coordinates_schema = {
+    "type": "json_schema",
+    "json_schema": {
+        "name": "Coordinates",
+        "schema": {
+            "title": "Coordinates",
+            "type": "object",
+            "properties": {
+                "latitude": {
+                    "type": "string",
+                    "description": "Latitude of the location."
+                },
+                "longitude": {
+                    "type": "string",
+                    "description": "Longitude of the location."
+                }
+            }
+        }
+    }
+}
 
 summary_prompt = (
     "Based on our conversation and the provided format, "
@@ -203,7 +182,280 @@ predefined_questions = [
     "What kind of soil do you have on your farm (sandy, clay, black soil, or something else)? And is your land flat or hilly?"
 ]
 
+CREATE_PROJECT_PROMPT = '''
+You are a helpful assistant. You have the following data about a project:
 
+User Inputs:
+- Farm location (city or village): {farm_location}
+- Crop being grown this season: {crop}
+- Project objective: {objective}
+- Crop stage: {crop_stage}
+- Farm size in acres: {farm_size_acres}
+- Planting date: {planting_date}
+- Irrigation method: {irrigation_method}
+- Crop purpose (personal or selling): {crop_purpose}
+- Selling method (direct, markets, brokers, co-ops, etc.): {selling_method}
+- Expected yield per acre (rough estimate): {expected_yield_per_acre}
+- Expected price per kg: {expected_price_per_kg}
+- Typical costs per acre (seeds, fertilizers, pesticides, etc.): {typical_costs_per_acre}
+- Irrigation costs per season per acre: {irrigation_costs_per_season_per_acre}
+- Labor or machinery usage: {labor_or_machinery}
+- Labor/machinery costs per season per acre: {labor_machinery_costs_per_season_per_acre}
+
+API Data:
+- short_range_forecast: {short_range_forecast}
+- now_cast_forecast: {now_cast_forecast}
+- daily_aggregated_data: {aggregated_data}
+
+Please analyze all the provided data and produce an **output** that follows provided JSON structure.
+
+
+'''
+
+
+create_project_schema = {
+    "type": "json_schema",
+    "json_schema": {
+        "name": "ProjectData",
+        "schema": {
+            "title": "ProjectData",
+            "type": "object",
+            "properties": {
+                "overviewData": {
+                    "type": "object",
+                    "description": "High-level public info about the project.",
+                    "properties": {
+                        "public": {
+                            "type": "boolean",
+                            "description": "Whether the project is publicly visible."
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Project name."
+                        },
+                        "status": {
+                            "type": "string",
+                            "description": "Current project status (e.g. 'Needs Attention')."
+                        },
+                        "location": {
+                            "type": "string",
+                            "description": "Geographical location (e.g., city name)."
+                        },
+                        "type": {
+                            "type": "string",
+                            "description": "Crop or project type (e.g., 'Barley')."
+                        },
+                        "objective": {
+                            "type": "string",
+                            "description": "Primary project objective (e.g., 'Improve grain quality')."
+                        },
+                        "newInsights": {
+                            "type": "number",
+                            "description": "Number of newly generated insights."
+                        },
+                        "lastUpdated": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Timestamp of the last update."
+                        }
+                    }
+                },
+                "projectDetailsData": {
+                    "type": "object",
+                    "description": "Additional project details about size, stage, irrigation, etc.",
+                    "properties": {
+                        "size": {
+                            "type": "string",
+                            "description": "Approximate farm size (e.g., '7.5' acres)."
+                        },
+                        "stage": {
+                            "type": "string",
+                            "description": "Current stage of the project (e.g., 'Soil Prep')."
+                        },
+                        "irrigationMethod": {
+                            "type": "string",
+                            "description": "Method of irrigation (e.g., 'Drip')."
+                        }
+                    }
+                },
+                "healthMetricsData": {
+                    "type": "object",
+                    "description": "Health-related metrics or stress factors for the crop.",
+                    "properties": {
+                        "bar": {
+                            "type": "number",
+                            "description": "Example integer metric (e.g., 40)."
+                        },
+                        "dayHeatStress": {
+                            "type": "number",
+                            "description": "Daytime heat stress level."
+                        },
+                        "nightHeatStress": {
+                            "type": "number",
+                            "description": "Nighttime heat stress level."
+                        },
+                        "waterNeeds": {
+                            "type": "string",
+                            "description": "Water requirement (Low/Medium/High)."
+                        },
+                        "frostRisk": {
+                            "type": "string",
+                            "description": "Frost risk level (e.g., 'High')."
+                        },
+                        "soilHealth": {
+                            "type": "number",
+                            "description": "Overall soil health score (0–100)."
+                        }
+                    }
+                },
+                "waterData": {
+                    "type": "object",
+                    "description": "Water usage sources and consumption details.",
+                    "properties": {
+                        "waterSources": {
+                            "type": "object",
+                            "properties": {
+                                "labels": {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "description": "List of water source names."
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": { "type": "number" },
+                                    "description": "Usage distribution matching the labels."
+                                },
+                                "colors": {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "description": "Corresponding color codes for each source."
+                                }
+                            }
+                        },
+                        "waterUsage": {
+                            "type": "object",
+                            "properties": {
+                                "current": {
+                                    "type": "number",
+                                    "description": "Current water usage in volume (e.g., 15000)."
+                                },
+                                "estimated": {
+                                    "type": "number",
+                                    "description": "Estimated usage in volume (e.g., 14000)."
+                                },
+                                "colors": {
+                                    "type": "object",
+                                    "properties": {
+                                        "current": {
+                                            "type": "string",
+                                            "description": "Color representing current usage."
+                                        },
+                                        "estimated": {
+                                            "type": "string",
+                                            "description": "Color representing estimated usage."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "recommendationData": {
+                    "type": "object",
+                    "description": "Recommended products and usage history data.",
+                    "properties": {
+                        "listProductsData": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "header": {
+                                        "type": "object",
+                                        "properties": {
+                                            "title": {
+                                                "type": "string",
+                                                "description": "Product title (e.g., '🧬 Root Energizer')."
+                                            },
+                                            "subtitle": {
+                                                "type": "string",
+                                                "description": "Short product subtitle or tagline."
+                                            }
+                                        }
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Short product description or usage info."
+                                    },
+                                    "link": {
+                                        "type": "string",
+                                        "description": "URL link to more information."
+                                    }
+                                }
+                            }
+                        },
+                        "usageHistory": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Product name used in the past."
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Date used (YYYY-MM-DD)."
+                                    },
+                                    "result": {
+                                        "type": "string",
+                                        "description": "Outcome or effect of using the product."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "insightsData": {
+                    "type": "object",
+                    "description": "Insights regarding environment, business, and protection aspects.",
+                    "properties": {
+                        "environmentInsights": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "title": { "type": "string" },
+                                    "description": { "type": "string" }
+                                }
+                            }
+                        },
+                        "businessInsights": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "title": { "type": "string" },
+                                    "description": { "type": "string" }
+                                }
+                            }
+                        },
+                        "protectionInsights": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "title": { "type": "string" },
+                                    "description": { "type": "string" }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 
 # The JSON schema above defines the expected structure for the final output based on the user's responses.
